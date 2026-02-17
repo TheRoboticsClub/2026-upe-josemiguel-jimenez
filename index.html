@@ -9,75 +9,89 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-
-    header {
-      background-color: #222;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
+      background-color: #e0e0e0;
     }
 
     .container {
       display: flex;
-      min-height: 100vh;
+      min-height: 100vh; /* ocupa toda la pantalla */
     }
 
-    /* Sidebar */
+    /* Sidebar izquierda */
     .sidebar {
-      width: 280px;
-      background-color: #ffffff;
+      width: 300px;
+      background-color: #2f7d3b; /* verde oscuro */
+      color: white;
       padding: 20px;
-      border-right: 2px solid #ddd;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* foto y contenido empieza desde arriba */
+      box-sizing: border-box;
     }
 
     .sidebar h2 {
       margin-top: 0;
-      color: #333;
     }
 
     .sidebar p {
-      color: #555;
       line-height: 1.5;
     }
 
-    .photo-box {
+    /* Foto circular con marco verde oscuro */
+    .photo-box img {
       width: 100%;
-      height: 200px;
-      background-color: #e0e0e0;
-      border: 2px dashed #999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 15px;
-      color: #555;
-      font-size: 14px;
+      max-width: 180px;
+      height: auto;
+      border-radius: 50%;
+      display: block;
+      margin: 20px auto 15px auto; /* 20px margen arriba */
+      border: 6px solid #1f5c2a; /* marco más grueso verde oscuro */
     }
 
-    /* Main content */
+    /* Contenido principal */
     .content {
       flex: 1;
       padding: 30px;
+      background-color: #a7d7a2; /* verde claro */
     }
 
+    /* Post como recuadro */
     .post {
-      background: white;
+      background: #d2f0c6; /* verde más clarito */
       padding: 20px;
       margin-bottom: 20px;
       border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    /* Hover: efecto sutil y subrayado */
+    .post:hover {
+      transform: scale(1.02); /* agranda un 2% */
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+    }
+
+    .post:hover h3,
+    .post:hover p,
+    .post:hover ul,
+    .post:hover small {
+      text-decoration: underline;
+      text-decoration-color: #a7d7a2; /* verde clarito */
     }
 
     .post h3 {
       margin-top: 0;
-      color: #222;
+      color: #2f7d3b;
+    }
+
+    .post-link {
+      text-decoration: none;
+      color: inherit;
+      display: block; /* ocupa todo el recuadro */
     }
 
     .post small {
-      color: #777;
+      color: #555;
     }
 
     footer {
@@ -87,20 +101,31 @@
       color: white;
       font-size: 14px;
     }
+
+    /* Responsivo */
+    @media (max-width: 800px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .content {
+        padding: 15px;
+      }
+    }
   </style>
 </head>
 
 <body>
-
-  <header>
-    Blog Prácticas
-  </header>
 
   <div class="container">
 
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="photo-box">
+        <img src="docs/logo.png" alt="Foto de Jose Miguel">
       </div>
 
       <h2>Sobre mí</h2>
@@ -116,33 +141,43 @@
       </p>
     </div>
 
-    <!-- Main content -->
+    <!-- Contenido principal -->
     <div class="content">
 
-      <div class="post">
-        <h3>Semana 1 - (Fecha)</h3>
-        <small>Publicado el viernes XX/XX/XXXX</small>
-        <p>
-          Aquí escribiré lo que he hecho durante la semana:
-        </p>
-        <ul>
-          <li>Tarea 1</li>
-          <li>Tarea 2</li>
-          <li>Tarea 3</li>
-        </ul>
-      </div>
+      <!-- Semana 1 -->
+      <a href="semana1.html" class="post-link">
+        <div class="post">
+          <h3>Semana 1 - (Fecha)</h3>
+          <small>Publicado el viernes XX/XX/XXXX</small>
+          <p>
+            Aquí escribiré lo que he hecho durante la semana:
+          </p>
+          <ul>
+            <li>Tarea 1</li>
+            <li>Tarea 2</li>
+            <li>Tarea 3</li>
+          </ul>
+        </div>
+      </a>
 
-      <div class="post">
-        <h3>Semana 2 - (Fecha)</h3>
-        <small>Publicado el viernes XX/XX/XXXX</small>
-        <p>
-          Aquí irán las actividades de la semana:
-        </p>
-        <ul>
-          <li>Tarea 1</li>
-          <li>Tarea 2</li>
-        </ul>
-      </div>
+      <!-- Semana 2 -->
+      <a href="semana2.html" class="post-link">
+        <div class="post">
+          <h3>Semana 2 - (Fecha)</h3>
+          <small>Publicado el viernes XX/XX/XXXX</small>
+          <p>
+            Aquí irán las actividades de la semana:
+          </p>
+          <ul>
+            <li>Tarea 1</li>
+            <li>Tarea 2</li>
+          </ul>
+        </div>
+      </a>
+
+      <!-- Más semanas -->
+      <!-- Copiar el bloque <a href="semanaX.html" class="post-link"> ... </a> para nuevas entradas -->
+
     </div>
 
   </div>
