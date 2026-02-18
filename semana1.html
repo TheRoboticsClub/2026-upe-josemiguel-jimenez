@@ -6,26 +6,135 @@
   <title>Semana 1 - Blog Prácticas</title>
 
   <style>
-    body { font-family: Arial; background: #e0e0e0; padding: 30px; }
-    .post { background: #d2f0c6; padding: 20px; border-radius: 10px; max-width: 800px; margin: auto; }
-    a { text-decoration: none; color: #2f7d3b; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2; /* mismo color de contenido de index */
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    small {
+      color: #555;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .progress-step {
+      margin-bottom: 15px;
+    }
+
+    pre {
+      background: #e6f4db;       /* verde muy clarito de fondo */
+      padding: 15px;             /* espacio interno */
+      border-radius: 8px;        /* esquinas redondeadas */
+      border: 2px solid #2f7d3b; /* borde verde oscuro */
+      overflow-x: auto;          /* scroll horizontal si es necesario */
+      font-family: Consolas, monospace;
+    }
   </style>
 </head>
 <body>
 
   <div class="post">
-    <h2>Semana 1 - (Fecha)</h2>
-    <small>Publicado el viernes XX/XX/XXXX</small>
-    <p>
-      Aquí escribiré todo lo que he hecho durante la semana:
-    </p>
-    <ul>
-      <li>Tarea 1</li>
-      <li>Tarea 2</li>
-      <li>Tarea 3</li>
-    </ul>
+    <h2>Semana 1 - 16/02 - 20/02</h2>
+
+    <p>Durante esta primera semana he seguido la guía para realizar el <b>despliegue D1 de Unibotics</b>. A continuación detallo los pasos y mi progreso:</p>
+
+    <div class="progress-step">
+      <h3>Paso 1: Preparación del entorno</h3>
+      <p>Lo primero que hice fue crear un entorno virtual, para evitar incompatibilidades con lo previamente instalado en mi máquina. Este se puede activar con el siguiente comando:</p>
+      <pre>source ~/.virtualenvs/academy-venv/bin/activate</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 2: Clonación del repositorio e instalación de dependencias</h3>
+      
+      <p>El siguiente paso seria clonar el repositorio en un directorio que vamos a crear:</p>
+      <pre>mkdir -p ~/jderobot/unibotics-webserver
+git clone --recurse-submodules git@github.com:jderobot-hub/unibotics-webserver.git ~/jderobot/unibotics-webserver</pre>
+
+      <p>A continuación debemos instalar los paquetes necesarios:</p>
+      <pre>cd ~/jderobot/unibotics-webserver
+pip install -r utils/requirements.txt</pre>
+    </div>
+
+
+<div class="progress-step">
+  <h3>Paso 3: Creación de zip de common y configuración de Webpack</h3>
+
+  <p>Para que el front-end de Unibotics funcione correctamente, es necesario preparar la carpeta <b>common</b> que contiene todas las dependencias de las interfaces. Primero, nos movemos al directorio correspondiente:</p>
+
+  <pre>cd unibotics/static/RoboticsAcademy/common</pre>
+
+  <p>Después, se crea un <b>zip de common</b> que incluye las interfaces necesarias (console_interfaces, gui_interfaces y hal_interfaces) para que Webpack pueda construir todas las dependencias del front-end.</p>
+
+  <pre>
+cd console_interfaces
+zip -r ../common.zip console_interfaces/
+cd ..
+cd gui_interfaces
+zip -r -u ../common.zip gui_interfaces/
+cd ..
+cd hal_interfaces
+zip -r -u ../common.zip hal_interfaces/
+cd ../..
+mv common/common.zip react_frontend/src/common.zip
+cd ../..</pre>
+
+  <p>Finalmente, se instala y configura <b>NVM</b> (Node Version Manager) para usar la versión correcta de Node.js (17) y se lanza Webpack en modo desarrollo para probar la aplicación.</p>
+
+  <pre>npm run dev</pre>
+
+  </div>
+
+  <div class="progress-step">
+    <h3>Paso 4: Base de datos</h3>
+
+  </div>
+
+    <p>En general, esta primera semana me ha permitido familiarizarme con la infraestructura y el proceso de despliegue de Unibotics.</p>
+
     <p><a href="index.html">← Volver al blog principal</a></p>
   </div>
+
+  
 
 </body>
 </html>
