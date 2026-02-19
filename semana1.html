@@ -10,131 +10,114 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 30px;
-      background-color: #a7d7a2; /* mismo color de contenido de index */
-      display: flex;
-      justify-content: center;
+      background-color: #a7d7a2; /* verde claro, mismo color de contenido de index */
     }
 
-    .post {
-      background: #d2f0c6;
-      padding: 30px;
+    /* Contenedor principal de la semana */
+    .week-container {
+      max-width: 1000px;
+      margin: 30px auto;
       border-radius: 10px;
-      max-width: 900px;
-      width: 100%;
-      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
-      box-sizing: border-box;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    h2 {
-      color: #2f7d3b;
+    /* Título de la semana (verde oscuro) */
+    .week-header {
+      background-color: #2f7d3b;
+      color: white;
+      padding: 20px;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    /* Área de contenido debajo (verde clarito) */
+    .week-content {
+      background-color: #a7d7a2;
+      padding: 30px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    /* Cada recuadro de subpágina */
+    .subpage-card {
+      flex: 1;
+      min-width: 280px;
+      background-color: #d2f0c6;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .subpage-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    }
+
+    .subpage-card h3 {
       margin-top: 0;
-    }
-
-    h3 {
       color: #2f7d3b;
-      margin-bottom: 5px;
     }
 
-    a {
+    a.subpage-link {
       text-decoration: none;
-      color: #2f7d3b;
+      color: inherit;
+      display: block;
     }
 
-    a:hover {
+    .back-link {
+      display: block;
+      margin: 20px 0 0 0;
+      color: #2f7d3b;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
       text-decoration: underline;
     }
 
-    small {
-      color: #555;
-    }
-
-    ul {
-      margin-top: 5px;
-    }
-
-    p {
-      line-height: 1.5;
-    }
-
-    .progress-step {
-      margin-bottom: 15px;
-    }
-
-    pre {
-      background: #e6f4db;       /* verde muy clarito de fondo */
-      padding: 15px;             /* espacio interno */
-      border-radius: 8px;        /* esquinas redondeadas */
-      border: 2px solid #2f7d3b; /* borde verde oscuro */
-      overflow-x: auto;          /* scroll horizontal si es necesario */
-      font-family: Consolas, monospace;
-    }
   </style>
 </head>
 <body>
 
-  <div class="post">
-    <h2>Semana 1 - 16/02 - 20/02</h2>
+  <div class="week-container">
 
-    <p>Durante esta primera semana he seguido la guía para realizar el <b>despliegue D1 de Unibotics</b>. A continuación detallo los pasos y mi progreso:</p>
-
-    <div class="progress-step">
-      <h3>Paso 1: Preparación del entorno</h3>
-      <p>Lo primero que hice fue crear un entorno virtual, para evitar incompatibilidades con lo previamente instalado en mi máquina. Este se puede activar con el siguiente comando:</p>
-      <pre>source ~/.virtualenvs/academy-venv/bin/activate</pre>
+    <!-- Encabezado verde oscuro con título de la semana -->
+    <div class="week-header">
+      Semana 1 - 16/02 - 20/02
     </div>
 
-    <div class="progress-step">
-      <h3>Paso 2: Clonación del repositorio e instalación de dependencias</h3>
-      
-      <p>El siguiente paso seria clonar el repositorio en un directorio que vamos a crear:</p>
-      <pre>mkdir -p ~/jderobot/unibotics-webserver
-git clone --recurse-submodules git@github.com:jderobot-hub/unibotics-webserver.git ~/jderobot/unibotics-webserver</pre>
+    <!-- Área verde clarito con los recuadros de lo que hiciste -->
+    <div class="week-content">
 
-      <p>A continuación debemos instalar los paquetes necesarios:</p>
-      <pre>cd ~/jderobot/unibotics-webserver
-pip install -r utils/requirements.txt</pre>
+      <p>Durante esta primera semana me he ido adaptando a las prácticas, instalando y configurando todo lo necesario para poder trabajar. He seguido los pasos del despliegue D1 de Unibotics y también las instrucciones para crear mi propio Radi.</p>
+
+      <!-- Recuadros de subpáginas -->
+      <a href="despliegue-d1.html" class="subpage-link">
+        <div class="subpage-card">
+          <h3>Despliegue D1 - Unibotics</h3>
+          <p>Detalles sobre la configuración y despliegue inicial del D1 de Unibotics.</p>
+        </div>
+      </a>
+
+      <a href="creacion-radi.html" class="subpage-link">
+        <div class="subpage-card">
+          <h3>Creación de Radi propio</h3>
+          <p>Explicación del proceso para crear tu propio Radi y personalizarlo.</p>
+        </div>
+      </a>
+
     </div>
 
-
-<div class="progress-step">
-  <h3>Paso 3: Creación de zip de common y configuración de Webpack</h3>
-
-  <p>Para que el front-end de Unibotics funcione correctamente, es necesario preparar la carpeta <b>common</b> que contiene todas las dependencias de las interfaces. Primero, nos movemos al directorio correspondiente:</p>
-
-  <pre>cd unibotics/static/RoboticsAcademy/common</pre>
-
-  <p>Después, se crea un <b>zip de common</b> que incluye las interfaces necesarias (console_interfaces, gui_interfaces y hal_interfaces) para que Webpack pueda construir todas las dependencias del front-end.</p>
-
-  <pre>
-cd console_interfaces
-zip -r ../common.zip console_interfaces/
-cd ..
-cd gui_interfaces
-zip -r -u ../common.zip gui_interfaces/
-cd ..
-cd hal_interfaces
-zip -r -u ../common.zip hal_interfaces/
-cd ../..
-mv common/common.zip react_frontend/src/common.zip
-cd ../..</pre>
-
-  <p>Finalmente, se instala y configura <b>NVM</b> (Node Version Manager) para usar la versión correcta de Node.js (17) y se lanza Webpack en modo desarrollo para probar la aplicación.</p>
-
-  <pre>npm run dev</pre>
-
   </div>
 
-  <div class="progress-step">
-    <h3>Paso 4: Base de datos</h3>
-
+  <div style="max-width:1000px; margin:20px auto; text-align:center;">
+    <a href="index.html" class="back-link">← Volver al blog principal</a>
   </div>
-
-    <p>En general, esta primera semana me ha permitido familiarizarme con la infraestructura y el proceso de despliegue de Unibotics.</p>
-
-    <p><a href="index.html">← Volver al blog principal</a></p>
-  </div>
-
-  
 
 </body>
 </html>

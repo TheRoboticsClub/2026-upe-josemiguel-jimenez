@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Despliegue D1 - Semana 1</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2; /* mismo color de contenido de index */
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    small {
+      color: #555;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .progress-step {
+      margin-bottom: 20px;
+    }
+
+    pre {
+      background: #e6f4db;       /* verde muy clarito de fondo */
+      padding: 15px;             
+      border-radius: 8px;        
+      border: 2px solid #2f7d3b; 
+      overflow-x: auto;          
+      font-family: Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="post">
+    <h2>Despliegue D1 - Semana 1 (16/02 - 20/02)</h2>
+
+    <p>Durante esta semana trabajé siguiendo la guía para completar el despliegue D1 de Unibotics. A continuación, detallo los pasos que realicé y mi progreso.</p>
+
+    <div class="progress-step">
+      <h3>Paso 1: Preparación del entorno</h3>
+      <p>Primero, creé un entorno virtual para evitar posibles conflictos con paquetes ya instalados en la máquina. Puede activarse con este comando:</p>
+      <pre>source ~/.virtualenvs/academy-venv/bin/activate</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 2: Clonación del repositorio e instalación de dependencias</h3>
+      <p>A continuación, cloné el repositorio de Unibotics y procedí a instalar todas las dependencias requeridas:</p>
+      <pre>mkdir -p ~/jderobot/unibotics-webserver
+git clone --recurse-submodules git@github.com:jderobot-hub/unibotics-webserver.git ~/jderobot/unibotics-webserver
+cd ~/jderobot/unibotics-webserver
+pip install -r utils/requirements.txt</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 3: Creación de zip de common y configuración de Webpack</h3>
+
+      <p>Para que el front-end de Unibotics funcione correctamente, es necesario preparar la carpeta <b>common</b>, que contiene todas las dependencias de las interfaces. Primero, nos movemos al directorio correspondiente:</p>
+      <pre>cd unibotics/static/RoboticsAcademy/common</pre>
+
+      <p>Después, creamos un <b>zip de common</b> que incluye todas las interfaces necesarias para que Webpack pueda construir el front-end:</p>
+      <pre>
+cd console_interfaces
+zip -r ../common.zip console_interfaces/
+cd ..
+cd gui_interfaces
+zip -r -u ../common.zip gui_interfaces/
+cd ..
+cd hal_interfaces
+zip -r -u ../common.zip hal_interfaces/
+cd ../..
+mv common/common.zip react_frontend/src/common.zip
+cd ../..</pre>
+
+      <p>Por último, se configuró <b>NVM</b> para usar Node.js 17 y se lanzó Webpack en modo desarrollo:</p>
+      <pre>npm run dev</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 4: Levantando la base de datos</h3>
+
+      <p>En lugar de instalar PostgreSQL directamente en el entorno local, utilizamos un contenedor Docker. Una vez creado, podemos iniciarlo fácilmente con:</p>
+      <pre>docker start academy_db</pre>
+
+      <p>Además, es necesario ajustar el archivo <code>.env</code> para que el servidor use el puerto correcto:</p>
+      <pre>SERVER_PORT=7000</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 5: Carga de datos de Ejercicios y Universos</h3>
+
+      <p>Antes de ejecutar las migraciones, es necesario cargar los datos de ejercicios y universos, disponibles en los repositorios <b>RoboticsAcademy (RA)</b> y <b>RoboticsInfrastructure (RI)</b>.</p>
+
+      <p>Primero, aplicamos los dumps de RI:</p>
+      <pre>docker exec -i academy_db psql -U user-dev -d academy_db &lt; ~/jderobot/unibotics-webserver/unibotics/static/RIdatabase/database/universes.sql
+docker exec -i academy_db psql -U user-dev -d academy_db &lt; ~/jderobot/unibotics-webserver/unibotics/static/RIdatabase/database/3d_models.sql</pre>
+
+      <p>Luego, aplicamos el dump de RA:</p>
+      <pre>docker exec -i academy_db psql -U user-dev -d academy_db &lt; ~/jderobot/unibotics-webserver/unibotics/static/RoboticsAcademy/database/exercises/db.sql</pre>
+
+      <p>Y finalmente, cargamos el dump de RA Premium:</p>
+      <pre>docker exec -i academy_db psql -U user-dev -d academy_db &lt; ~/jderobot/unibotics-webserver/unibotics/static/RoboticsAcademy-premium/database/exercises/db.sql</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 6: Migraciones en Django</h3>
+
+      <p>Las migraciones en Django permiten actualizar la base de datos según los cambios realizados en los modelos de la aplicación. Desde el directorio principal de <code>unibotics-webserver/unibotics</code>, primero generamos las nuevas migraciones tras cualquier modificación en los modelos:</p>
+      <pre>python manage.py makemigrations</pre>
+
+      <p>Luego, aplicamos las migraciones localmente para sincronizar el servidor con la base de datos y asegurarnos de que los cambios se han aplicado correctamente:</p>
+      <pre>python manage.py migrate</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 7: Configuración de usuarios de prueba</h3>
+
+      <p>Tras aplicar las migraciones, cargué algunos datos de prueba para inicializar la base de datos. Estos se encuentran en <code>utils/dumps</code> dentro del proyecto.</p>
+
+      <p>Para incorporarlos, ejecutamos el siguiente comando dentro del contenedor Docker:</p>
+      <pre>docker exec -i academy_db psql -U user-dev -d academy_db &lt; ~/jderobot/unibotics-webserver/utils/dumps/new_dump.sql</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 8: Arrancar el servidor Django</h3>
+
+      <p>Una vez completados todos los pasos anteriores, podemos iniciar el servidor Django para probar la aplicación. Antes de ejecutar el comando, asegúrate de que el entorno virtual esté activado:</p>
+      <pre>python manage.py runserver 7000</pre>
+
+      <p>Esto levantará el servidor localmente en el puerto 7000, permitiendo acceder al front-end y verificar que todo funciona correctamente.</p>
+    </div>
+
+    <div class="progress-step">
+      <h3>Resumen: Comandos para ejecutar Unibotics en local</h3>
+
+      <p>Estos son los comandos principales que se deben ejecutar para levantar Unibotics en un entorno local. Antes de ejecutar algunos de ellos, asegúrate de haber seguido los pasos previos del despliegue.</p>
+
+      <!-- Comando 1 -->
+      <h4>1. Iniciar el contenedor de la base de datos</h4>
+      <p>Este comando levanta el contenedor Docker con PostgreSQL, que contiene la base de datos de Unibotics.</p>
+      <pre>docker start academy_db</pre>
+
+      <!-- Comando 2 -->
+      <h4>2. Ejecutar el servidor Django</h4>
+      <p>Antes de ejecutar este comando, asegúrate de tener activado el entorno virtual (ver Paso 1 del despliegue). Esto inicia el servidor web de la aplicación en el puerto 7000.</p>
+      <pre>python manage.py runserver 7000</pre>
+
+      <!-- Comando 3 -->
+      <h4>3. Lanzar el front-end con Webpack</h4>
+      <p>Desde el directorio <code>unibotics-webserver/unibotics/react_frontend</code>, ejecuta este comando para levantar el front-end en modo desarrollo.</p>
+      <pre>npm run dev</pre>
+
+      <!-- Comando 4 -->
+      <h4>4. Ejecutar el backend de Unibotics</h4>
+      <p>Este comando inicia el contenedor que maneja el backend de los robots y expone los puertos necesarios para la comunicación y simulación.</p>
+      <pre>docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 jderobot/robotics-backend:latest</pre>
+    </div>
+
+    <p>Estos pasos me permitieron familiarizarme con la infraestructura del D1 y comprobar que el front-end y back-end se ejecutan correctamente.</p>
+
+    <p><a href="semana1.html">← Volver a Semana 1</a></p>
+  </div>
+
+</body>
+</html>
