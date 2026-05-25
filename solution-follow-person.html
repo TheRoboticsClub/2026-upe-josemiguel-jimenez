@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Follow Person - Solución y mejoras</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    .section {
+      margin-bottom: 25px;
+    }
+
+    a {
+      color: #2f7d3b;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="post">
+
+    <h2>Follow Person - Revisión y mejoras antes de la migración</h2>
+
+    <div class="section">
+      <p>
+        Antes de comenzar con la migración del ejercicio Follow Person a la versión Harmonic del simulador, se revisó y mejoró la implementación existente en Classic.
+        El objetivo era asegurar que el comportamiento base del algoritmo fuera estable y robusto antes de adaptarlo a la nueva versión del entorno.
+      </p>
+    </div>
+
+    <div class="section">
+      <h3>Mejoras en el control PID</h3>
+      <p>
+        Se corrigió la formulación del controlador angular, pasando a una derivada más estándar y estable, además de ajustar los parámetros para reducir oscilaciones.
+      </p>
+
+      <pre>
+kp = 0.6
+kd = 0.25
+
+derivative = error - prev_error
+prev_error = error
+
+tx = kp * error + kd * derivative
+tx = max(min(tx, 0.6), -0.6)
+      </pre>
+    </div>
+
+    <div class="section">
+      <h3>Normalización del error</h3>
+      <p>
+        El cálculo del error se normalizó respecto al centro de la imagen, mejorando la generalización del controlador a distintas resoluciones.
+      </p>
+
+      <pre>
+center = width_img / 2
+error = (centroid_x - center) / center
+      </pre>
+    </div>
+
+    <div class="section">
+      <h3>Filtrado del centroide</h3>
+      <p>
+        Se añadió un filtro exponencial para suavizar el movimiento del centroide detectado y reducir ruido en la detección.
+      </p>
+
+      <pre>
+alpha_filter = 0.7
+
+cx = alpha_filter * last_centroid[0] + (1 - alpha_filter) * centroid[0]
+cy = alpha_filter * last_centroid[1] + (1 - alpha_filter) * centroid[1]
+centroid = (cx, cy)
+      </pre>
+    </div>
+
+    <div class="section">
+      <h3>Ajustes en robustez del tracking</h3>
+      <p>
+        Se incrementó el umbral de pérdida de tracking para evitar cambios prematuros de estado cuando el detector falla temporalmente.
+      </p>
+
+      <pre>
+if tracking_failure_cont > 25:
+    state = SEARCH_PERSON
+      </pre>
+    </div>
+
+    <div class="section">
+      <p>
+        Gracias a estas mejoras, el sistema de seguimiento se volvió más estable, suave y robusto, lo que permitió una transición más segura hacia la migración a Harmonic.
+      </p>
+    </div>
+
+    <p><a href="semana2.html">← Volver a Semana 2</a></p>
+
+  </div>
+
+</body>
+</html>

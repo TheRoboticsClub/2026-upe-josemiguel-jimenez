@@ -10,10 +10,9 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 30px;
-      background-color: #a7d7a2; /* verde claro, mismo color de contenido de index */
+      background-color: #a7d7a2;
     }
 
-    /* Contenedor principal de la semana */
     .week-container {
       max-width: 1000px;
       margin: 30px auto;
@@ -22,7 +21,6 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    /* Título de la semana (verde oscuro) */
     .week-header {
       background-color: #2f7d3b;
       color: white;
@@ -31,7 +29,6 @@
       font-weight: bold;
     }
 
-    /* Área de contenido debajo (verde clarito) */
     .week-content {
       background-color: #a7d7a2;
       padding: 30px;
@@ -41,7 +38,11 @@
       justify-content: space-between;
     }
 
-    /* Cada recuadro de subpágina */
+    .intro {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
     .subpage-card {
       flex: 1;
       min-width: 280px;
@@ -67,11 +68,13 @@
       text-decoration: none;
       color: inherit;
       display: block;
+      flex: 1;
     }
 
     .back-link {
       display: block;
-      margin: 20px 0 0 0;
+      margin: 20px auto;
+      text-align: center;
       color: #2f7d3b;
       text-decoration: none;
     }
@@ -80,23 +83,30 @@
       text-decoration: underline;
     }
 
+    @media (max-width: 800px) {
+      .week-content {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
+
 <body>
 
   <div class="week-container">
 
-    <!-- Encabezado verde oscuro con título de la semana -->
     <div class="week-header">
-      Semana 1 - 16/02 - 20/02
+      Semana 1 ~ 16/02 - 20/02
     </div>
 
-    <!-- Área verde clarito con los recuadros de lo que hiciste -->
     <div class="week-content">
 
-      <p>Durante esta primera semana me he ido adaptando a las prácticas, instalando y configurando todo lo necesario para poder trabajar. He seguido los pasos del despliegue D1 de Unibotics y también las instrucciones para crear mi propio Radi.</p>
+      <div class="intro">
+        <p>
+          Durante esta primera semana me he ido adaptando a las prácticas, instalando y configurando todo lo necesario para poder trabajar. He seguido los pasos del despliegue D1 de Unibotics y también las instrucciones para crear mi propio Radi.
+        </p>
+      </div>
 
-      <!-- Recuadros de subpáginas -->
       <a href="despliegue-d1.html" class="subpage-link">
         <div class="subpage-card">
           <h3>Despliegue D1 - Unibotics</h3>

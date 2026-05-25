@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Problemas con RADI - Semana 2</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    img {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 10px;
+      margin: 15px 0;
+      border: 2px solid #2f7d3b;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    small {
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="post">
+
+    <h2>Problemas con RADI</h2>
+    <small>Errores durante la creación del entorno RADI propio</small>
+
+    <p>
+      Durante el proceso de creación de mi propio RADI siguiendo los pasos oficiales, me encontré con un error al intentar compilar la imagen del Docker.
+    </p>
+
+    <!-- IMAGEN DEL ERROR -->
+    <img src="images/radi_problem.png" alt="Error compilación RADI">
+
+    <p>
+      El sistema no conseguía completar la compilación del RADI, lo que impedía avanzar con la migración del ejercicio <b>Follow Person</b> a Harmonic.
+    </p>
+
+    <h3>Investigación del problema</h3>
+
+    <p>
+      Tras analizar el error, detecté que el problema no estaba en la configuración del Docker ni en los scripts de build, sino en las dependencias de los repositorios.
+    </p>
+
+    <p>
+      En concreto, la rama del repositorio <b>RoboticsInfrastructure</b> que estaba utilizando para el ejercicio Follow Person (follow-person-harmonic) estaba desactualizada respecto a la rama <b>humble-devel</b>.
+    </p>
+
+    <p>
+      Esta incompatibilidad provocaba que el RADI no pudiera compilar correctamente.
+    </p>
+
+    <h3>Solución aplicada</h3>
+
+    <p>
+      Para resolverlo, realicé un rebase de mi rama de trabajo con la rama actualizada <code>humble-devel</code>:
+    </p>
+
+    <pre>
+# Ir al repositorio de RoboticsInfrastructure
+cd RoboticsInfrastructure
+
+# Asegurarse de estar en la rama correcta
+git checkout follow-person-harmonic
+
+# Traer los últimos cambios
+git fetch origin
+
+# Rebase contra la rama actualizada
+git rebase origin/humble-devel</pre>
+
+    <p>
+      Durante el rebase se resolvieron algunos conflictos menores en dependencias del entorno.
+    </p>
+
+    <p>
+      Una vez finalizado el proceso, la compilación del RADI funcionó correctamente y pude continuar con el ejercicio sin problemas.
+    </p>
+
+    <h3>Conclusión</h3>
+
+    <p>
+      El problema no era del entorno Docker en sí, sino de la falta de sincronización entre ramas del repositorio, al haber intentado usar una rama antigua surgieron esos problemas. Mantener las ramas actualizadas con <code>humble-devel</code> es clave para evitar errores de compilación en el RADI.
+    </p>
+
+    <p>
+      <a href="semana2.html">← Volver a Semana 2</a>
+    </p>
+
+  </div>
+
+</body>
+</html>
