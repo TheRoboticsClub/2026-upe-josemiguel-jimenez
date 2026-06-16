@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bug Car Junction - Semana 6</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      color: #2f7d3b;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+      border: 2px solid #2f7d3b;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Bug encontrado en Car Junction</h2>
+
+  <p>
+    Durante esta semana se realizaron pruebas del ejercicio <b>Car Junction</b> en el entorno de simulación,
+    con el objetivo de validar su correcto funcionamiento dentro de la migración a Gazebo Harmonic.
+  </p>
+
+  <h3>Objetivo de las pruebas</h3>
+
+  <p>
+    El objetivo principal era comprobar el comportamiento del sistema en condiciones normales de ejecución,
+    así como tras operaciones de pausa y reset de la simulación.
+  </p>
+
+  <h3>Bug detectado</h3>
+
+  <p>
+    Durante las pruebas se detectó un problema no documentado previamente: al pausar la simulación y hacer reset,
+    en la siguiente ejecución los coches del escenario aparecían como “fantasmas”.
+  </p>
+
+  <p>
+    Es decir:
+  </p>
+
+  <ul>
+    <li>Se seguían visualizando en la cámara.</li>
+    <li>No existían en el mundo físico de simulación.</li>
+    <li>No colisionaban ni interactuaban con el entorno.</li>
+  </ul>
+  
+  <video controls style="width: 100%; border-radius: 10px; margin-top: 15px; border: 2px solid #2f7d3b;">
+    <source src="../videos/car_junction_bug.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de vídeo.
+  </video>
+
+  <h3>Investigación realizada</h3>
+
+  <p>
+    Se realizaron múltiples pruebas para descartar instancias duplicadas o procesos que no se eliminaran correctamente.
+    Sin embargo, no se encontraron entidades activas adicionales en el mundo.
+  </p>
+
+  <p>
+    Todo apunta a un problema relacionado con la capa de visualización o el renderizado de la cámara en Gazebo Harmonic,
+    aunque no se pudo determinar con certeza la causa exacta.
+  </p>
+
+  <h3>Referencia del problema</h3>
+
+  <p>
+    El problema quedó registrado en el sistema de issues para su seguimiento futuro:
+  </p>
+
+  <p>
+    <a href="https://github.com/JdeRobot/RoboticsInfrastructure/issues/698" target="_blank">
+      Issue #698 - Car Junction ghost cars bug
+    </a>
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    Este bug evidencia la complejidad de la sincronización entre el estado físico del simulador y su representación visual,
+    especialmente en escenarios complejos como Car Junction.
+  </p>
+
+  <p>
+    Aunque no se pudo resolver durante esta fase, quedó correctamente documentado.
+  </p>
+
+  <p>
+    <a href="semana6.html">← Volver a Semana 6</a>
+  </p>
+
+</div>
+
+</body>
+</html>

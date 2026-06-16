@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convivencia Classic y Harmonic - Semana 5</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Convivencia entre Gazebo Classic y Gazebo Harmonic</h2>
+
+  <p>
+    Esta semana se consiguió resolver el problema de compatibilidad entre los plugins de
+    Gazebo Classic y Gazebo Harmonic, permitiendo su convivencia dentro del mismo workspace sin errores de compilación.
+  </p>
+
+  <h3>Problema inicial</h3>
+
+  <p>
+    Ambos entornos utilizan arquitecturas completamente diferentes, lo que generaba conflictos al intentar compilar
+    ambos plugins en el mismo CMake:
+  </p>
+
+  <ul>
+    <li>Gazebo Classic → API basada en <code>gazebo::physics</code> y <code>ModelPlugin</code></li>
+    <li>Gazebo Harmonic → arquitectura basada en <code>gz-sim</code> (ECS)</li>
+  </ul>
+
+  <p>
+    Esto provocaba errores de compilación y linkado debido a dependencias incompatibles.
+  </p>
+
+  <h3>Solución adoptada</h3>
+
+  <p>
+    La solución consistió en separar completamente la compilación de ambos plugins dentro del CMake,
+    evitando que compartieran el mismo flujo de dependencias.
+  </p>
+
+  <p>
+    Para ello se aplicaron dos ideas principales:
+  </p>
+
+  <ul>
+    <li>Separación de targets en CMake (Classic vs Harmonic).</li>
+    <li>Aislamiento de dependencias por plugin.</li>
+  </ul>
+
+  <h3>Uso de OBJECT library en Classic</h3>
+
+  <p>
+    Para el plugin de Gazebo Classic se utilizó una <b>OBJECT library</b>, lo que permite compilar el código fuente
+    sin mezclarlo directamente con el target final:
+  </p>
+
+  <pre>
+add_library(personplugin_obj OBJECT amazon_hospital/src/person.cpp)
+
+add_library(personplugin STATIC $<TARGET_OBJECTS:personplugin_obj>)
+
+ament_target_dependencies(personplugin "rclcpp" "pluginlib" "gazebo")</pre>
+
+  <p>
+    Este enfoque evitó conflictos con dependencias internas del sistema Classic.
+  </p>
+
+  <h3>Plugin Harmonic independiente</h3>
+
+  <p>
+    El plugin de Gazebo Harmonic se mantuvo completamente separado, compilando directamente contra las librerías de gz-sim:
+  </p>
+
+  <pre>
+add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
+
+target_link_libraries(personplugin_harmonic
+  gz-sim8::gz-sim8
+  gz-plugin2::gz-plugin2
+  gz-math7::gz-math7
+  Threads::Threads)</pre>
+
+  <h3>Importancia del uso de subdirectorios en CMake</h3>
+
+  <p>
+    Además de separar los targets, fue clave estructurar la compilación mediante subdirectorios en el CMake,
+    de forma que cada plugin se compila desde su propia ruta y contexto.
+  </p>
+
+  <p>
+    Esto permite que CMake trate cada plugin como una unidad independiente de compilación, evitando mezclar
+    includes o dependencias entre Classic y Harmonic.
+  </p>
+
+  <h3>Ejemplo de separación por subdirectorios en CMake</h3>
+
+  <pre>
+# Plugin Classic (carpeta amazon_hospital/)
+add_library(personplugin_obj OBJECT amazon_hospital/src/person.cpp)
+add_library(personplugin STATIC $<TARGET_OBJECTS:personplugin_obj>)
+
+# Plugin Harmonic (carpeta follow_person_harmonic/)
+add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)</pre>
+
+  <p>
+    Gracias a esta separación, cada plugin se compila dentro de su propio contexto,
+    evitando conflictos de includes y resolviendo correctamente sus dependencias.
+  </p>
+
+  <h3>Resultado</h3>
+
+  <p>
+    Esta combinación de separación de targets y uso de subdirectorios en el CMake permitió compilar ambos plugins
+    en el mismo proyecto sin errores.
+  </p>
+
+  <p>
+    Además, se pudo mantener la versión Classic como referencia mientras se desarrollaba la versión Harmonic en paralelo.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    La solución adoptada permitió una migración progresiva sin romper el sistema existente,
+    garantizando compatibilidad entre ambos entornos de Gazebo.
+  </p>
+
+  <p>
+    <a href="semana5.html">← Volver a Semana 5</a>
+  </p>
+
+</div>
+
+</body>
+</html>

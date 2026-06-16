@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Problemas CMake Classic vs Harmonic - Semana 4</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Problemas de compatibilidad en CMake entre Gazebo Classic y Harmonic</h2>
+
+  <p>
+    Durante el desarrollo del proyecto se detectó un problema importante de compatibilidad entre
+    el plugin de <b>Gazebo Classic</b> y el nuevo plugin desarrollado para <b>Gazebo Harmonic</b>.
+  </p>
+
+  <h3>Origen del problema</h3>
+
+  <p>
+    El objetivo inicial del proyecto era mantener la versión funcional en Gazebo Classic mientras
+    se desarrollaba la migración a Harmonic. Sin embargo, ambos plugins coexistían dentro del mismo
+    sistema de compilación CMake, lo que generaba conflictos de dependencias y compilación.
+  </p>
+
+  <p>
+    El problema principal era que:
+  </p>
+
+  <ul>
+    <li>El plugin Classic dependía de <code>gazebo</code> (Gazebo Classic).</li>
+    <li>El plugin Harmonic dependía de <code>gz-sim</code>, <code>gz-plugin</code> y <code>gz-math</code>.</li>
+    <li>Ambos no podían coexistir correctamente en el mismo build sin conflictos.</li>
+  </ul>
+
+  <h3>Fragmento del CMake afectado</h3>
+
+  <p>
+    Inicialmente, el CMake intentaba compilar ambos plugins:
+  </p>
+
+  <pre>
+#add_library(personplugin amazon_hospital/src/person.cpp)
+#ament_target_dependencies(personplugin "rclcpp" "gazebo" "pluginlib")</pre>
+
+  <p>
+    Mientras que el plugin de Harmonic sí estaba activo:
+  </p>
+
+  <pre>
+add_library(personplugin_harmonic follow_person_harmonic/src/person_harmonic.cpp)
+
+target_link_libraries(personplugin_harmonic
+  gz-sim8::gz-sim8
+  gz-plugin2::gz-plugin2
+  gz-math7::gz-math7
+  Threads::Threads)</pre>
+
+  <h3>Solución temporal aplicada</h3>
+
+  <p>
+    Para poder seguir avanzando con el desarrollo y validar el funcionamiento del sistema,
+    se tomó una decisión temporal:
+  </p>
+
+  <ul>
+    <li>Comentar completamente el plugin de Gazebo Classic en el CMake.</li>
+    <li>Dejar únicamente activo el plugin de Gazebo Harmonic.</li>
+    <li>Permitir así que el proyecto compilara sin conflictos de dependencias.</li>
+  </ul>
+
+  <p>
+    Esta solución permitió verificar que el resto del sistema funcionaba correctamente en Harmonic,
+    aunque se perdió temporalmente la compatibilidad con Classic.
+  </p>
+
+  <h3>Resultado</h3>
+
+  <p>
+    Tras este cambio, el proyecto pudo compilar correctamente y ejecutar la simulación en Gazebo Harmonic,
+    validando el comportamiento del nuevo plugin sin interferencias del código antiguo.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    Este problema evidenció la dificultad de mantener compatibilidad entre dos versiones de Gazebo
+    con arquitecturas completamente diferentes. La coexistencia de plugins Classic y Harmonic en el
+    mismo sistema de compilación no es viable sin separación clara de builds.
+  </p>
+
+  <p>
+    La solución adoptada permitió continuar el desarrollo, priorizando la migración a Harmonic
+    mientras se mantenía el código Classic como referencia desactivada.
+  </p>
+
+  <p>
+    <a href="semana4.html">← Volver a Semana 4</a>
+  </p>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adaptación a Gazebo Harmonic - Semana 2</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3, h4 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Adaptación a Gazebo Harmonic</h2>
+
+  <p>
+    En la migración del ejercicio a <b>Gazebo Harmonic</b>, se han tenido que realizar cambios tanto en el mundo de simulación
+    como en los launchers de ROS 2 utilizados para arrancar el sistema, y en algún fichero más que iremos viendo en otras semanas.
+  </p>
+
+  <h3>Cambios en el world</h3>
+
+  <p>
+    El mundo original del hospital se ha adaptado a Gazebo Harmonic utilizando plugins modernos
+    de <code>gz-sim</code>. Además, para mejorar el rendimiento de la simulación, se ha creado
+    una versión <b>reducida del hospital</b>.
+  </p>
+
+  <p>
+    Esta reducción era necesaria para evitar una simulación demasiado pesada, ya que el escenario
+    original contenía demasiados objetos y elementos visuales que no aportaban valor al ejercicio
+    y podían sobrecargar el sistema.
+  </p>
+
+  <ul>
+    <li>Menos objetos en escena para reducir carga gráfica y física.</li>
+    <li>Mejor rendimiento en tiempo real.</li>
+    <li>Menor sobreestimulación visual innecesaria para el robot.</li>
+    <li>Mantenimiento del escenario hospitalario original pero simplificado.</li>
+  </ul>
+
+  <p>
+    También se han actualizado los plugins del mundo para ser compatibles con Harmonic:
+  </p>
+
+  <ul>
+    <li>gz::sim::systems::Physics</li>
+    <li>gz::sim::systems::Sensors</li>
+    <li>gz::sim::systems::SceneBroadcaster</li>
+    <li>gz::sim::systems::UserCommands</li>
+  </ul>
+
+  <h3>Cambios en los launchers</h3>
+
+  <p>
+    El launcher principal se ha simplificado para adaptarse a la arquitectura moderna de Gazebo Harmonic.
+    Ahora se utiliza <code>ros_gz_sim</code> para lanzar directamente el simulador.
+  </p>
+
+  <pre>
+gazebo_server = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        os.path.join(ros_gz_sim, "launch", "gz_sim.launch.py")
+    ),
+    launch_arguments={
+        "gz_args": [
+            f"-r -s -v4 --gui_config {gui_config_path} {world_path}"
+        ],
+        "on_exit_shutdown": "true",
+    }.items(),
+)</pre>
+
+  <p>
+    Este cambio unifica el arranque del simulador bajo Gazebo Harmonic, eliminando lógica antigua
+    de Gazebo Classic.
+  </p>
+
+  <h3>Gestión de recursos</h3>
+
+  <p>
+    Para que Gazebo pueda localizar correctamente los modelos del robot y del entorno,
+    se configura la variable de entorno:
+  </p>
+
+  <pre>
+ld.add_action(SetEnvironmentVariable(
+    "GZ_SIM_RESOURCE_PATH",
+    gazebo_models_path
+))
+
+ld.add_action(AppendEnvironmentVariable(
+    "GZ_SIM_RESOURCE_PATH",
+    f":{gazebo_models_path}"
+))</pre>
+
+  <h3>Spawn del robot</h3>
+
+  <p>
+    El robot se lanza mediante un launcher independiente, lo que permite desacoplar la simulación
+    del modelo del robot y mejorar la modularidad del sistema.
+  </p>
+
+  <pre>
+spawn_robot_cmd = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        os.path.join(robot_launch_dir, "spawn_robot.launch.py")
+    )
+)</pre>
+
+  <h3>Resumen</h3>
+
+  <p>
+    En conjunto, estos cambios permiten ejecutar el escenario hospitalario en Gazebo Harmonic
+    de forma más eficiente, modular y compatible con ROS 2 moderno, utilizando un mundo reducido
+    para mejorar el rendimiento sin perder funcionalidad.
+  </p>
+
+  <p>
+    <a href="semana3.html">← Volver a Semana 3</a>
+  </p>
+
+</div>
+
+</body>
+</html>

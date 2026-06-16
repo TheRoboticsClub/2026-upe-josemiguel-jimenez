@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pruebas Car Junction - Semana 5</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+      border: 2px solid #2f7d3b;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Pruebas del ejercicio Car Junction</h2>
+
+  <p>
+    Durante esta semana se realizaron pruebas del ejercicio <b>Car Junction</b> con el objetivo de validar su correcto funcionamiento
+    dentro del entorno de simulación.
+  </p>
+
+  <img src="../images/car_junction.png" alt="Car Junction bug visual">
+
+  <h3>Ejecución de la solución de control</h3>
+
+  <p>
+    Además de las pruebas del entorno, se ejecutó la solución de control basada en visión artificial desarrollada para este ejercicio,
+    con el objetivo de comprobar el comportamiento autónomo del vehículo en un escenario completo.
+  </p>
+
+  <p>
+    El sistema se basa en una máquina de estados que combina detección de señales, seguimiento de carril y gestión de intersecciones
+    mediante procesamiento de imagen en tiempo real.
+  </p>
+
+  <h3>Componentes principales del sistema</h3>
+
+  <ul>
+    <li>Detección de señales de stop mediante segmentación en HSV.</li>
+    <li>Detección de línea de parada mediante máscara de color blanco.</li>
+    <li>Seguimiento de carril usando el centroide de la carretera.</li>
+    <li>Detección de movimiento en el cruce mediante diferencia de frames.</li>
+  </ul>
+
+  <h3>Máquina de estados</h3>
+
+  <p>
+    El comportamiento del vehículo se organiza en distintos estados que permiten gestionar la conducción de forma autónoma:
+  </p>
+
+  <ul>
+    <li><b>Estado 0:</b> seguimiento de carril a velocidad normal.</li>
+    <li><b>Estado 1:</b> aproximación a señal de stop.</li>
+    <li><b>Estado 2:</b> parada y espera en la línea.</li>
+    <li><b>Estado 3:</b> ejecución del giro en la intersección.</li>
+    <li><b>Estado 4:</b> reanudación del seguimiento de carril.</li>
+  </ul>
+
+  <h3>Fragmento de implementación</h3>
+
+  <pre>
+if state == 0:
+    v = 4.0
+    w_cmd = float(error) * kp
+
+elif state == 2:
+    v = 0.0
+
+elif state == 3:
+    v = 2.0
+    w_cmd = 1.0</pre>
+
+  <h3>Resultados obtenidos</h3>
+
+  <p>
+    Las pruebas realizadas demostraron que el sistema es capaz de ejecutar correctamente el comportamiento autónomo esperado:
+  </p>
+
+  <ul>
+    <li>Detección correcta de señales de stop.</li>
+    <li>Parada en la línea correspondiente.</li>
+    <li>Gestión de la prioridad en el cruce.</li>
+    <li>Ejecución de giros controlados.</li>
+    <li>Retorno al seguimiento de carril de forma autónoma.</li>
+  </ul>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    La solución implementada cumple el objetivo del ejercicio Car Junction, demostrando un comportamiento autónomo completo
+    basado en visión artificial y control por estados.
+  </p>
+
+  <p>
+    <a href="semana5.html">← Volver a Semana 5</a>
+  </p>
+
+</div>
+
+</body>
+</html>

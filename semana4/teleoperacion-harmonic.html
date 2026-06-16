@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cambios  en el plugin de la persona - Semana 4</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Cambios  en el plugin de la persona</h2>
+
+  <p>
+    Durante la migración del proyecto a <b>Gazebo Harmonic</b>, se detectó que el plugin de la persona
+    implementado originalmente para <b>Gazebo Classic</b> no era compatible con la nueva arquitectura.
+  </p>
+
+  <h3>Diferencias en los includes</h3>
+
+  <p>
+    En Gazebo Classic se utilizaban las siguientes librerías:
+  </p>
+
+  <pre>
+#include &lt;gazebo/gazebo.hh&gt;
+#include &lt;gazebo/physics/physics.hh&gt;
+#include &lt;gazebo/common/common.hh&gt;
+#include &lt;ignition/math/Quaterniond.hh&gt;</pre>
+
+  <p>
+    En Gazebo Harmonic, estas dependencias cambian completamente hacia el ecosistema <b>gz-sim</b>:
+  </p>
+
+  <pre>
+#include &lt;gz/sim/System.hh&gt;
+#include &lt;gz/sim/Model.hh&gt;
+#include &lt;gz/sim/Util.hh&gt;
+#include &lt;gz/math/Quaterniond.hh&gt;</pre>
+
+  <h3>Cambio en la estructura del plugin</h3>
+
+  <p>
+    El cambio más importante es que en Gazebo Classic se utilizaba un <code>ModelPlugin</code>:
+  </p>
+
+  <pre>
+class Person : public ModelPlugin</pre>
+
+  <p>
+    En Gazebo Harmonic esto deja de existir. Ahora los plugins se implementan como sistemas ECS:
+  </p>
+
+  <pre>
+class PersonSystem :
+  public gz::sim::System,
+  public gz::sim::ISystemConfigure,
+  public gz::sim::ISystemPreUpdate</pre>
+
+  <p>
+    Esto implica que la lógica ya no se basa en callbacks de modelo, sino en fases del ciclo de simulación.
+  </p>
+
+  <h3>Registro del plugin</h3>
+
+  <p>
+    En Gazebo Classic el plugin se registraba de forma estática con:
+  </p>
+
+  <pre>
+GZ_REGISTER_MODEL_PLUGIN(Person)</pre>
+
+  <p>
+    En Gazebo Harmonic este sistema desaparece. En su lugar, el plugin se registra mediante el sistema de factories de <code>gz-sim</code>.
+    Ya no existe un macro equivalente directo.
+  </p>
+
+  <h3>Actualización del modelo</h3>
+
+  <p>
+    En Classic se modificaba directamente la pose del modelo:
+  </p>
+
+  <pre>
+this->model->SetWorldPose(pose);</pre>
+
+  <p>
+    En Harmonic, el acceso al modelo se realiza a través del <code>EntityComponentManager</code>,
+    modificando componentes en lugar de manipular directamente el objeto.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    La migración a Gazebo Harmonic supuso una reestructuración importante del plugin original.
+    Aunque fue necesario modificar la arquitectura y las dependencias, el sistema final sigue permitiendo el
+    movimiento de la persona dentro de la simulación.
+  </p>
+
+  <p>
+    En particular, el nuevo enfoque mantiene la capacidad de mover al agente tanto de forma autónoma como mediante
+    control externo, asegurando la continuidad funcional del sistema tras la migración.
+  </p>
+
+  <p>
+    <a href="semana4.html">← Volver a Semana 4</a>
+  </p>
+
+</div>
+
+</body>
+</html>

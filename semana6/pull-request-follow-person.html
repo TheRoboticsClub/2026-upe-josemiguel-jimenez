@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pull Request RA y RI - Semana 6</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      color: #2f7d3b;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Gestión de Pull Request en RA y RI</h2>
+
+  <p>
+    Durante esta semana se han realizado los Pull Requests correspondientes en los repositorios de
+    <b>Robotics Academy (RA)</b> y <b>Robotics Infrastructure (RI)</b>, utilizando la rama de trabajo
+    <code>follow_person_harmonic</code> en RA y <code>follow-person-harmonic</code> en RI.
+  </p>
+
+  <p>
+    Los Pull Requests realizados son los siguientes:
+  </p>
+
+  <ul>
+    <li>
+      RA: <a href="https://github.com/JdeRobot/RoboticsAcademy/pull/3651" target="_blank">
+        Pull Request #3651
+      </a>
+    </li>
+    <li>
+      RI: <a href="https://github.com/JdeRobot/RoboticsInfrastructure/pull/697" target="_blank">
+        Pull Request #697
+      </a>
+    </li>
+  </ul>
+
+  <h3>1. Actualización previa obligatoria</h3>
+
+  <p>
+    Antes de crear cualquier Pull Request es imprescindible actualizar la rama principal para evitar conflictos.
+  </p>
+
+  <pre>
+git checkout main
+git pull origin main</pre>
+
+  <p>
+    Después se actualiza la rama de trabajo con la última versión de main:
+  </p>
+
+  <pre>
+git checkout follow_person_harmonic
+git rebase main</pre>
+
+  <h3>2. Resolución de conflictos (si existen)</h3>
+
+  <p>
+    En caso de aparecer conflictos durante el rebase, estos deben resolverse manualmente y continuar el proceso:
+  </p>
+
+  <pre>
+# Resolver conflictos en archivos
+git add .
+git rebase --continue</pre>
+
+  <h3>3. Pull Request en RA</h3>
+
+  <p>
+    En RA se crea la rama de trabajo siguiendo la convención del repositorio, utilizando guiones bajos.
+  </p>
+
+  <pre>
+git checkout -b follow_person_harmonic
+git add .
+git commit -m "Follow person harmonic implementation"
+git push origin follow_person_harmonic</pre>
+
+  <p>
+    Posteriormente se abre el Pull Request hacia la rama principal del repositorio RA.
+  </p>
+
+  <ul>
+    <li>Rama: <code>follow_person_harmonic</code></li>
+    <li>Repositorio: RoboticsAcademy</li>
+    <li>PR: <a href="https://github.com/JdeRobot/RoboticsAcademy/pull/3651" target="_blank">#3651</a></li>
+  </ul>
+
+  <h3>4. Pull Request en RI</h3>
+
+  <p>
+    El flujo en RI es equivalente, asegurando siempre que la rama esté actualizada antes de subir cambios.
+  </p>
+
+  <pre>
+git checkout -b follow-person-harmonic
+git add .
+git commit -m "Follow person harmonic plugin and world updates"
+git push origin follow-person-harmonic</pre>
+
+  <ul>
+    <li>Rama: <code>follow-person-harmonic</code></li>
+    <li>Repositorio: RoboticsInfrastructure</li>
+    <li>PR: <a href="https://github.com/JdeRobot/RoboticsInfrastructure/pull/697" target="_blank">#697</a></li>
+  </ul>
+
+  <h3>5. Importancia del rebase</h3>
+
+  <p>
+    El uso de <code>git rebase</code> permite mantener un historial limpio y reduce conflictos en la integración
+    entre ambos repositorios. Es especialmente importante cuando se trabaja en paralelo en RA y RI.
+  </p>
+
+  <pre>
+git rebase main</pre>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    El flujo de trabajo con ramas sincronizadas, actualización previa y resolución de conflictos mediante rebase
+    permite que los Pull Requests en RA y RI se integren correctamente, manteniendo coherencia entre ambos repositorios
+    y evitando problemas en la compilación o integración del sistema.
+  </p>
+
+  <p>
+    <a href="semana6.html">← Volver a Semana 6</a>
+  </p>
+
+</div>
+
+</body>
+</html>

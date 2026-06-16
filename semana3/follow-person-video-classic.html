@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Follow Person Classic - Video</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 15px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .progress-step {
+      margin-bottom: 20px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="post">
+
+    <h2>Follow Person en Gazebo Classic - Ejecución y vídeo</h2>
+
+    <p>
+      Antes de comenzar con la migración del ejercicio Follow Person a la versión Harmonic, revisé y mejoré la solución existente en Gazebo Classic.
+      Para ello, generé el RADI correspondiente a mi rama de Robotics Infrastructure y lancé el entorno correctamente.
+    </p>
+
+    <div class="progress-step">
+      <h3>Paso 1: Generación del RADI</h3>
+      <p>Primero, construí la imagen del RADI desde mi rama de RI.</p>
+      <pre>./scripts/build.sh -a humble-devel -i humble-devel -t test</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 2: Lanzamiento de RoboticsAcademy</h3>
+      <p>Después lancé RoboticsAcademy en modo desarrollo:</p>
+      <pre>./scripts/develop_academy.sh -g</pre>
+    </div>
+
+    <div class="progress-step">
+      <h3>Paso 3: Ejecución del ejercicio Follow Person</h3>
+      <p>
+        En la interfaz web seleccioné el ejercicio <b>Follow Person</b>, el cual dispone de dos modos:
+      </p>
+
+      <ul>
+        <li><b>Modo automático:</b> la persona se mueve de forma autónoma en el entorno.</li>
+        <li><b>Modo teleoperado:</b> la persona se controla manualmente con el teclado.</li>
+      </ul>
+
+      <p>
+        Ejecuté ambos modos para comprobar el comportamiento del sistema antes de iniciar la migración.
+      </p>
+    </div>
+
+    <div class="progress-step">
+      <h3>Vídeo de ejecución</h3>
+      <p>Resultado de la ejecución del ejercicio en Gazebo Classic:</p>
+
+      <video controls>
+        <source src="../videos/follow_person_classic.mp4" type="video/mp4">
+        Tu navegador no soporta vídeo.
+      </video>
+    </div>
+
+    <p><a href="semana3.html">← Volver a Semana 3</a></p>
+
+  </div>
+
+</body>
+</html>

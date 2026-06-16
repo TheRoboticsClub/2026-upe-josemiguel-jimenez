@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Problema reset del mundo - Semana 4</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3, h4 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Problema con el reset del mundo en Gazebo Harmonic</h2>
+
+  <p>
+    Durante la migración del ejercicio a <b>Gazebo Harmonic</b> se detectó un problema importante:
+    el botón de reset en la plataforma <b>Unibotics</b> no funcionaba correctamente.
+  </p>
+
+  <h3>Descripción del problema</h3>
+
+  <p>
+    Al pulsar el botón de reset, la simulación no volvía al estado inicial del mundo.
+    El robot y los objetos permanecían exactamente en la posición en la que se encontraban
+    en el momento de detener la simulación, sin reiniciar el entorno.
+  </p>
+
+  <p>
+    Esto provocaba que cada nueva ejecución partiera de un estado inconsistente, afectando
+    directamente a las pruebas del ejercicio de follow person.
+  </p>
+
+  <h3>Causa del problema</h3>
+
+  <p>
+    Tras analizar la configuración del simulador, se descubrió que el error se encontraba
+    en el fichero del mundo reducido:
+    <code>reduced_hospital_harmonic.world</code>.
+  </p>
+
+  <p>
+    El problema era que el nombre del mundo no coincidía con el esperado por Gazebo para
+    gestionar correctamente el reset.
+  </p>
+
+  <pre>
+&lt;world name="hospital"&gt;</pre>
+
+  <p>
+    Gazebo espera que el mundo tenga un nombre consistente (en muchos casos el nombre por defecto
+    o el mismo que utiliza el sistema de lanzamiento). Al no coincidir, el sistema de reset de
+    Unibotics no era capaz de identificar correctamente el mundo activo.
+  </p>
+
+  <h3>Solución aplicada</h3>
+
+  <p>
+    La solución consistió en corregir el nombre del mundo en el fichero SDF, asegurando que
+    coincidiera con el esperado por el sistema de lanzamiento y el entorno de simulación.
+  </p>
+
+    <pre>
+&lt;world name="default"&gt;</pre>
+
+  <p>
+    Tras este cambio, el reset volvió a funcionar correctamente, restaurando tanto la posición
+    del robot como el estado completo de la escena.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    Este problema mostró la importancia de la coherencia entre la configuración del mundo
+    y el sistema de ejecución en Gazebo Harmonic. Un pequeño detalle como el nombre del mundo
+    puede afectar directamente a funcionalidades críticas como el reset de la simulación.
+  </p>
+
+  <p>
+    <a href="semana4.html">← Volver a Semana 4</a>
+  </p>
+
+</div>
+
+</body>
+</html>

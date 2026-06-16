@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elementos en Gazebo Harmonic - Semana 5</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Elementos integrados en Gazebo Harmonic</h2>
+
+  <p>
+    En el entorno de Gazebo Harmonic se han incorporado distintos elementos dentro del mundo de simulación
+    para los ejercicios desarrollados en el proyecto. Estos elementos están organizados en dos escenarios independientes,
+    cada uno con un propósito distinto dentro del sistema.
+  </p>
+
+  <h3>Escenario 1: Persona controlada</h3>
+
+  <p>
+    En este escenario se utiliza un modelo de persona controlada mediante el plugin desarrollado en la semana anterior
+    (<code>libpersonplugin_harmonic.so</code>), el cual permite habilitar o deshabilitar el movimiento automático
+    a través del parámetro <code>auto_movement</code>.
+  </p>
+
+  <pre>
+&lt;model name="PersonToControl_harmonic"&gt;
+
+  &lt;plugin name="person_plugin::Person" filename="libpersonplugin_harmonic.so"&gt;
+    &lt;auto_movement&gt;false&lt;/auto_movement&gt;
+  &lt;/plugin&gt;
+
+  &lt;static&gt;false&lt;/static&gt;
+
+&lt;/model&gt;</pre>
+
+  <p>
+    Este modelo se utiliza para pruebas de interacción directa, donde la persona puede ser controlada externamente
+    dentro del entorno de simulación.
+  </p>
+
+  <ul>
+    <li>Uso del plugin desarrollado en la semana anterior.</li>
+    <li>Control externo del movimiento.</li>
+    <li>Posibilidad de activar o desactivar comportamiento automático.</li>
+  </ul>
+
+  <h3>Escenario 2: Persona automática</h3>
+
+  <p>
+    En este segundo escenario, la persona se define como un actor dentro del mundo de simulación,
+    con un comportamiento completamente autónomo basado en una trayectoria temporal.
+  </p>
+
+  <pre>
+&lt;actor name="PersonToFollowActor_harmonic"&gt;
+
+  &lt;script&gt;
+    &lt;loop&gt;true&lt;/loop&gt;
+    &lt;auto_start&gt;true&lt;/auto_start&gt;
+
+    &lt;trajectory type="walk"&gt;
+      &lt;waypoint&gt;
+        &lt;time&gt;15&lt;/time&gt;
+        &lt;pose&gt;1.0 -7.5 0 0 0 0&lt;/pose&gt;
+      &lt;/waypoint&gt;
+
+      &lt;waypoint&gt;
+        &lt;time&gt;37&lt;/time&gt;
+        &lt;pose&gt;-8.0 -8.0 0 0 0 -1.57&lt;/pose&gt;
+      &lt;/waypoint&gt;
+
+      &lt;waypoint&gt;
+        &lt;time&gt;75&lt;/time&gt;
+        &lt;pose&gt;0.0 0.0 0 0 0 -4.71&lt;/pose&gt;
+      &lt;/waypoint&gt;
+    &lt;/trajectory&gt;
+  &lt;/script&gt;
+
+&lt;/actor&gt;</pre>
+
+  <p>
+    Este actor se ejecuta de forma continua en bucle, reproduciendo una trayectoria predefinida mediante tiempos y poses,
+    simulando el movimiento de una persona en el entorno.
+  </p>
+
+  <ul>
+    <li>Movimiento completamente autónomo.</li>
+    <li>Trayectoria basada en waypoints temporales.</li>
+    <li>Ejecución en bucle dentro del escenario.</li>
+  </ul>
+
+  <h3>Incorporación en el world</h3>
+
+  <p>
+    Ambos elementos, junto con el robot principal del sistema, se incorporan al mundo de simulación
+    mediante etiquetas <code>&lt;include&gt;</code>.
+  </p>
+
+  <pre>
+&lt;include&gt;
+  &lt;name&gt;person2follow&lt;/name&gt;
+  &lt;uri&gt;model://PersonToFollowActor_harmonic&lt;/uri&gt;
+  &lt;pose&gt;4 9 0 0 0 0&lt;/pose&gt;
+&lt;/include&gt;
+
+&lt;include&gt;
+  &lt;name&gt;robot_follow_person&lt;/name&gt;
+  &lt;uri&gt;model://turtlebot2_harmonic&lt;/uri&gt;
+  &lt;pose&gt;-1.0 10.0 0.1 0 0 0&lt;/pose&gt;
+&lt;/include&gt;</pre>
+
+  <p>
+    Esta estructura permite integrar cada elemento de forma independiente dentro del entorno,
+    manteniendo separada la lógica de control, la simulación automática y el robot autónomo.
+  </p>
+
+  <ul>
+    <li>Uso de <code>include</code> para modularidad del mundo.</li>
+    <li>Separación clara entre escenarios.</li>
+    <li>Facilidad para modificar o sustituir elementos individualmente.</li>
+  </ul>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    La integración de estos elementos permite disponer de un entorno de simulación donde coexisten distintos tipos de agentes:
+    una persona controlada y una persona automática, junto con el robot autónomo del sistema.
+  </p>
+
+  <p>
+    <a href="semana5.html">← Volver a Semana 5</a>
+  </p>
+
+</div>
+
+</body>
+</html>
