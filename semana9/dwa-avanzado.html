@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DWA Avanzado</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #a7d7a2;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background-color: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 35px;
+    }
+
+    p {
+      text-align: justify;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      color: #2f7d3b;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>DWA Avanzado</h1>
+
+<p>
+Durante esta semana se ha continuado avanzando en el nuevo ejercicio
+<b>Dynamic Window Approach (DWA)</b> para Robotics Academy Premium.
+El trabajo se ha centrado principalmente en dos aspectos:
+por un lado, finalizar el diseño de los visores específicos del ejercicio y,
+por otro, mejorar la solución de referencia hasta conseguir que el robot
+sea capaz de completar una vuelta completa al circuito evitando tanto
+obstáculos como paredes utilizando únicamente la técnica DWA.
+</p>
+
+<h2>Versión final de los visores</h2>
+
+<p>
+Los visores desarrollados durante la semana anterior han evolucionado hasta
+alcanzar prácticamente su aspecto definitivo. Aunque mantienen la misma
+filosofía visual inicial, se han incorporado algunos elementos adicionales
+que facilitan la comprensión del algoritmo y ayudan a los alumnos durante
+la implementación.
+</p>
+
+<img src="../images/visoresfinalDWA.png" alt="Visores DWA">
+
+<p>
+Uno de los cambios más relevantes consiste en la representación explícita
+del tamaño de la ventana dinámica dentro del visor superior. Gracias a ello
+es posible observar en tiempo real cuáles son las velocidades lineales y
+angulares alcanzables por el robot en cada instante, teniendo en cuenta
+sus limitaciones dinámicas.
+</p>
+
+<p>
+El visor inferior continúa mostrando el mapa de puntuaciones calculado
+para todas las combinaciones de velocidades evaluadas, permitiendo
+identificar visualmente cuál es la mejor acción disponible y cuál será
+finalmente seleccionada por el algoritmo.
+</p>
+
+<h2>Mejoras en la solución DWA</h2>
+
+<p>
+Además del trabajo realizado sobre la interfaz visual, se ha continuado
+afinando la solución del ejercicio para conseguir un comportamiento robusto
+a lo largo de todo el circuito. El objetivo era que el robot fuese capaz de
+navegar entre los distintos puntos de control evitando colisiones y sin
+quedar bloqueado en situaciones complejas.
+</p>
+
+<p>
+La implementación sigue la filosofía clásica de DWA: generar múltiples
+trayectorias candidatas, simular su evolución futura y asignar una
+puntuación a cada una de ellas para seleccionar posteriormente la mejor.
+</p>
+
+<h2>Evaluación de trayectorias</h2>
+
+<p>
+Uno de los elementos más importantes de la solución es la función de
+evaluación. Para cada trayectoria simulada se calculan tres métricas:
+alineación con el objetivo (<i>heading</i>), distancia a obstáculos
+(<i>clearance</i>) y velocidad de avance (<i>speed</i>).
+</p>
+
+<pre><code>score = (
+    ALPHA * heading_score +
+    BETA * clearance_score +
+    GAMMA * speed_score
+)</code></pre>
+
+<p>
+La puntuación final se obtiene mediante una combinación ponderada de
+estos tres criterios. De esta forma el robot no solamente intenta avanzar
+rápidamente hacia el objetivo, sino que también mantiene una distancia
+segura respecto a los obstáculos presentes en el entorno.
+</p>
+
+<h2>Generación y simulación de trayectorias</h2>
+
+<p>
+Para cada par de velocidades lineal y angular perteneciente a la ventana
+dinámica se realiza una simulación hacia el futuro. El resultado es una
+trayectoria candidata que posteriormente será evaluada.
+</p>
+
+<pre><code>for v in v_values:
+    for w in w_values:
+
+        traj = simulate_trajectory(v, w, DT, STEPS)
+
+        score, heading_s, clearance_s, speed_s = evaluate_trajectory(
+            traj,
+            targetx_rel,
+            targety_rel,
+            v,
+            w,
+            laser_xy
+        )</code></pre>
+
+<p>
+Este procedimiento permite explorar una gran cantidad de movimientos
+posibles en cada iteración y seleccionar siempre la alternativa más
+adecuada para la situación actual.
+</p>
+
+<h2>Representación de la ventana dinámica</h2>
+
+<p>
+Una vez evaluadas todas las trayectorias, la información se envía a los
+visores desarrollados específicamente para este ejercicio.
+</p>
+
+<pre><code>WebGUI.showDynamicWindow([
+    (p["v"], p["w"], p["score_norm"])
+    for p in all_traces
+])
+
+WebGUI.showBestVelocity([best_v, best_w])</code></pre>
+
+<p>
+Gracias a estos visores es posible observar tanto el espacio completo de
+soluciones disponibles como la velocidad finalmente seleccionada por el
+algoritmo en cada ciclo de control.
+</p>
+
+<h2>Demostración de funcionamiento</h2>
+
+<p>
+Como resultado del trabajo realizado, la solución desarrollada es capaz de
+completar una vuelta completa al circuito evitando correctamente los
+obstáculos y siguiendo la secuencia de objetivos propuesta por el ejercicio.
+</p>
+
+<video controls style="width: 100%; border-radius: 10px; margin-top: 15px; border: 2px solid #2f7d3b;">
+    <source src="../videos/dwa_obst.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de vídeo.
+</video>
+
+<p>
+El vídeo asociado a esta práctica muestra el comportamiento del robot y
+cómo el algoritmo DWA evalúa continuamente las distintas trayectorias para
+seleccionar la mejor acción posible.
+</p>
+
+<h2>Conclusiones</h2>
+
+<p>
+Durante esta semana se ha alcanzado la versión final del ejercicio Dynamic Window Approach. Los visores ya presentan el aspecto
+final previsto y la solución desarrollada ha demostrado ser capaz de
+completar el circuito completo utilizando exclusivamente la estrategia DWA,
+constituyendo una base sólida para la futura incorporación del ejercicio a
+Robotics Academy Premium.
+</p>
+
+<a href="semana9.html" class="back-link">← Volver a la Semana 9</a>
+
+</div>
+
+</body>
+</html>

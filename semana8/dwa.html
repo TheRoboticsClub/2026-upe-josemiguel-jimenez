@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Window Approach</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Nuevo ejercicio: Dynamic Window Approach</h2>
+
+  <p>
+    Durante esta semana se me planteó la creación de un nuevo ejercicio para
+    <a href="https://github.com/JdeRobot/RoboticsAcademy-premium" target="_blank">
+      Robotics Academy Premium
+    </a>.
+  </p>
+
+  <p>
+    El ejercicio recibe el nombre de <b>Dynamic Window Approach (DWA)</b> y está
+    basado en el mismo escenario utilizado por el ejercicio <i>Obstacle Avoidance</i>.
+    Aunque ambos comparten entorno y objetivo general, se plantean como ejercicios
+    independientes ya que emplean algoritmos de navegación completamente distintos.
+  </p>
+
+  <img src="../images/mundoDWA.png" alt="Car Junction bug visual">
+
+  <h3>¿Qué es Dynamic Window Approach?</h3>
+
+  <p>
+    Dynamic Window Approach es un algoritmo de navegación local ampliamente utilizado
+    en robótica móvil. Su objetivo es seleccionar en cada instante las velocidades
+    lineales y angulares que permiten avanzar hacia el objetivo evitando colisiones.
+  </p>
+
+  <p>
+    A diferencia del ejercicio Obstacle Avoidance, donde la navegación se realiza
+    mediante campos de fuerzas atractivas y repulsivas, DWA trabaja directamente
+    sobre el espacio de velocidades del robot.
+  </p>
+
+  <p>
+    El algoritmo genera un conjunto de velocidades alcanzables teniendo en cuenta
+    las limitaciones dinámicas del robot y evalúa cada una mediante una función
+    de coste.
+  </p>
+
+  <pre>
+Score(v,w) = α · Heading(v,w) + β · Clearance(v,w) + γ · Velocity(v,w)</pre>
+
+  <p>
+    donde:
+  </p>
+
+  <ul>
+    <li><b>Heading</b>: favorece trayectorias orientadas hacia el objetivo.</li>
+    <li><b>Clearance</b>: penaliza trayectorias cercanas a obstáculos.</li>
+    <li><b>Velocity</b>: favorece velocidades elevadas.</li>
+  </ul>
+
+  <p>
+    La combinación de estos términos permite elegir el mejor movimiento posible
+    en cada iteración.
+  </p>
+
+  <h3>Nuevos visores para el ejercicio</h3>
+
+  <p>
+    Como parte del desarrollo del ejercicio se implementaron nuevos visores
+    específicos para facilitar la comprensión del algoritmo.
+  </p>
+
+  <img src="../images/visoresDWA.png" alt="Car Junction bug visual">
+
+  <p>
+    El primero de ellos representa la denominada <b>ventana dinámica</b>, mostrando
+    gráficamente todas las combinaciones de velocidad lineal y angular que el robot
+    puede alcanzar en el siguiente instante de tiempo.
+  </p>
+
+  <p>
+    El segundo visor utiliza un <b>heatmap</b> para representar la evaluación de
+    todas las velocidades candidatas. Cada punto corresponde a una posible acción
+    del robot y el color indica la puntuación obtenida tras aplicar la función
+    de coste.
+  </p>
+
+  <p>
+    Gracias a esta representación es posible identificar visualmente cuál es la
+    mejor acción disponible y cuál será finalmente seleccionada por el algoritmo.
+  </p>
+
+  <h3>Primer prototipo</h3>
+
+  <p>
+    Durante esta semana se desarrolló una primera versión funcional de estos
+    visores. Aunque el ejercicio todavía no cuenta con toda la lógica implementada,
+    los paneles de visualización ya permiten observar el funcionamiento básico
+    del algoritmo y servirán como herramienta de depuración durante el desarrollo.
+  </p>
+
+  <video controls style="width: 100%; border-radius: 10px; margin-top: 15px; border: 2px solid #2f7d3b;">
+    <source src="../videos/visoresDWA.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de vídeo.
+  </video>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    El desarrollo del ejercicio Dynamic Window Approach supone la creación de una
+    nueva práctica para Robotics Academy Premium basada en técnicas de navegación
+    local ampliamente utilizadas en robótica. Durante esta primera fase se ha
+    definido la estructura del ejercicio y se han implementado los primeros
+    visores que permitirán comprender visualmente cómo se toman las decisiones
+    dentro del algoritmo DWA.
+  </p>
+
+  <p>
+    <a href="semana8.html">← Volver a Semana 8</a>
+  </p>
+
+</div>
+
+</body>
+</html>

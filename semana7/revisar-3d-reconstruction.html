@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revisión del ejercicio 3D Reconstruction</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Revisión del ejercicio 3D Reconstruction</h2>
+
+  <p>
+    Durante esta semana se realizaron diferentes pruebas sobre el ejercicio
+    <b>3D Reconstruction</b> con el objetivo de comprobar que todos sus componentes
+    funcionaban correctamente. Se revisó el comportamiento general del ejercicio,
+    los visores disponibles y el flujo completo de ejecución para verificar que la
+    experiencia del usuario fuera la esperada.
+  </p>
+
+  <img src="../images/3dreconstruction.png" alt="Car Junction bug visual">
+
+  <p>
+    Tras estas comprobaciones iniciales no se detectaron problemas funcionales en
+    el ejercicio. Tanto los visores como las herramientas de reconstrucción se
+    comportaban correctamente y permitían seguir el desarrollo de la práctica sin
+    incidencias.
+  </p>
+
+  <h3>Problema detectado con el RTF</h3>
+
+  <p>
+    Durante las pruebas sí se observó un inconveniente relacionado con el
+    <b>RTF (Real Time Factor)</b> de la simulación. El valor obtenido era
+    relativamente bajo, alrededor de <b>0.3</b>, lo que afectaba al rendimiento
+    general del ejercicio.
+  </p>
+
+  <p>
+    Como primera aproximación se investigaron distintos factores que podían estar
+    influyendo en el rendimiento:
+  </p>
+
+  <ul>
+    <li>Resolución de las cámaras utilizadas por el ejercicio.</li>
+    <li>Configuración de sombras del mundo de simulación.</li>
+    <li>Carga gráfica del escenario.</li>
+    <li>Complejidad de los modelos presentes en el entorno.</li>
+  </ul>
+
+  <p>
+    Ajustando algunos de estos parámetros se consiguió mejorar notablemente el
+    rendimiento, llegando a alcanzar valores cercanos a <b>0.6 de RTF</b>.
+  </p>
+
+  <h3>Restricciones del ejercicio</h3>
+
+  <p>
+    Sin embargo, tras comentarlo con otros miembros del equipo, se decidió que
+    modificar la resolución de las cámaras o la configuración visual del mundo no
+    era una opción válida.
+  </p>
+
+  <p>
+    El ejercicio forma parte de un máster relacionado con visión por computador y
+    dichos parámetros tienen impacto directo en el contenido docente. Por este
+    motivo, la resolución de las cámaras y las condiciones visuales del escenario
+    debían mantenerse exactamente igual que en la versión original.
+  </p>
+
+  <h3>Optimización de modelos</h3>
+
+  <p>
+    Una vez descartadas las modificaciones sobre sensores y configuración gráfica,
+    la alternativa fue actuar sobre los modelos del escenario.
+  </p>
+
+  <img src="../images/3dmodels.png" alt="Car Junction bug visual">
+
+  <p>
+    Se revisaron especialmente los <i>meshes</i> de algunos objetos presentes en el
+    mundo, simplificando aquellos que tenían una complejidad innecesariamente alta
+    para la simulación. Esta optimización permitió reducir la carga computacional
+    manteniendo el mismo aspecto general del entorno.
+  </p>
+
+  <p>
+    Gracias a estos cambios se consiguió mejorar el rendimiento hasta alcanzar
+    aproximadamente un <b>RTF de 0.45</b>, obteniendo una mejora significativa sin
+    alterar ninguno de los parámetros docentes del ejercicio.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    La revisión permitió confirmar el correcto funcionamiento del ejercicio
+    3D Reconstruction y detectar un problema de rendimiento relacionado con el RTF.
+    Aunque inicialmente se encontraron soluciones que mejoraban considerablemente
+    la velocidad de simulación, las restricciones del propio ejercicio obligaron a
+    buscar alternativas compatibles con los requisitos docentes. Finalmente, la
+    simplificación de algunos modelos del escenario permitió aumentar el rendimiento
+    manteniendo intactas las características visuales y los sensores utilizados por
+    los estudiantes.
+  </p>
+
+  <p>
+    <a href="semana7.html">← Volver a Semana 7</a>
+  </p>
+
+</div>
+
+</body>
+</html>
