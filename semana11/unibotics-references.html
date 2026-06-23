@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Referencias Unibotics - Visual Odometry</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    a {
+      color: #2f7d3b;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .box {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      margin-bottom: 15px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 10px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Referencias utilizadas para Visual Odometry</h2>
+
+  <p>
+    Para el desarrollo del nuevo ejercicio de <strong>Visual Odometry (VO)</strong> hemos tomado como referencia
+    dos ejercicios ya existentes en Unibotics, que nos proporcionan parte de la infraestructura
+    base tanto para la entrada de vídeo como para la visualización en 3D de resultados.
+  </p>
+
+  <hr>
+
+  <h3>1. Basic Computer Vision - Entrada de vídeo</h3>
+
+  <p>
+    Del ejercicio <strong>Basic Computer Vision</strong> hemos reutilizado la forma en la que el usuario puede
+    seleccionar un vídeo local y enviarlo al entorno de ejecución de Unibotics.
+  </p>
+
+    Este sistema permite trabajar con imágenes en dos modos:
+    <ul>
+      <li><strong>Python API:</strong> getImage() y showImage()</li>
+      <li><strong>ROS2:</strong> entrada y salida mediante topics</li>
+    </ul>
+
+  <p>
+    La clase <strong>WebGUI</strong> actúa como puente entre el navegador y el backend en Python/ROS2,
+    gestionando:
+  </p>
+
+  <ul>
+    <li>Recepción de frames desde el navegador (base64)</li>
+    <li>Decodificación a imágenes OpenCV</li>
+    <li>Publicación en ROS2 si es necesario</li>
+    <li>Envío de imágenes procesadas de vuelta al frontend</li>
+  </ul>
+
+  <p>
+    Gracias a esta infraestructura, en Visual Odometry podemos utilizar vídeos como entrada inicial,
+    simulando sensores de cámara reales.
+  </p>
+
+  <hr>
+
+  <h3>2. 3D Reconstruction - Visualización de trayectorias</h3>
+
+  <p>
+    Del ejercicio de <strong>3D Reconstruction</strong> hemos reutilizado el sistema de visualización en 3D,
+    que nos permite representar trayectorias dentro de un entorno tridimensional.
+  </p>
+
+    Este visor 3D se utiliza para mostrar:
+    <ul>
+      <li>Trayectoria estimada por el usuario</li>
+      <li>Ground Truth (posición real)</li>
+    </ul>
+
+  <p>
+    El componente principal es <strong>WebGUI3D</strong>, que renderiza el escenario 3D y permite dibujar
+    en tiempo real las trayectorias calculadas.
+  </p>
+
+  <p>
+    Además, el sistema gestiona eventos como reset del entorno y sincronización del estado del ejercicio.
+  </p>
+
+  <hr>
+
+  <h3>Aplicación en Visual Odometry</h3>
+
+  <p>
+    En el nuevo ejercicio de Visual Odometry combinamos ambas infraestructuras:
+  </p>
+
+  <ul>
+    <li>Entrada de vídeo basada en Basic Computer Vision</li>
+    <li>Visualización 3D basada en 3D Reconstruction</li>
+  </ul>
+
+  <p>
+    Esto nos permite construir un sistema donde:
+  </p>
+
+    El usuario procesa imágenes de vídeo para estimar movimiento, y posteriormente se representan
+    en 3D tanto la trayectoria estimada como la real (ground truth), facilitando la comparación directa.
+
+  <h3>Conclusión</h3>
+
+  <p>
+    La reutilización de estas dos bases ha permitido acelerar el desarrollo del ejercicio de Visual Odometry,
+    aprovechando infraestructura ya validada para entrada de vídeo y visualización 3D.
+  </p>
+
+  <p>
+    <a href="semana11.html">← Volver a Semana 11</a>
+  </p>
+
+</div>
+
+</body>
+</html>

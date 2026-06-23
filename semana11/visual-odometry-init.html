@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Odometry - Semana 11</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .highlight {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Introducción a Visual Odometry</h2>
+
+  <p>
+    Durante esta semana se comienza a trabajar en el ejercicio de <strong>Visual Odometry (VO)</strong>,
+    una técnica fundamental en robótica que permite estimar el movimiento de un robot a partir de imágenes
+    capturadas por una cámara.
+  </p>
+
+  <p>
+    La idea principal es reconstruir el movimiento del robot en un entorno 3D utilizando únicamente información visual.
+    Esto se hace estimando cómo cambia la posición de la cámara entre fotogramas consecutivos.
+  </p>
+
+  <h3>¿Qué es Visual Odometry?</h3>
+
+  <p>
+    Visual Odometry es un algoritmo que estima la trayectoria de un sistema móvil (como un robot o vehículo)
+    analizando la secuencia de imágenes capturadas por una cámara.
+  </p>
+
+  <p>
+    En nuestro caso, el sistema trabaja en un entorno 3D donde:
+  </p>
+
+  <ul>
+    <li>La cámara actúa como sensor principal</li>
+    <li>Se estiman posiciones relativas entre frames</li>
+    <li>Se reconstruye la trayectoria del robot en el espacio</li>
+  </ul>
+
+  El <strong>objetivo final</strong> es representar en 3D tanto la trayectoria estimada por el usuario como la trayectoria real (ground truth), permitiendo comparar ambos resultados visualmente.
+
+  <h3>Representación en 3D</h3>
+
+  <p>
+    El sistema visualiza el movimiento del robot en un entorno tridimensional donde se muestran:
+  </p>
+
+  <ul>
+    <li><strong>Ground Truth (GT):</strong> posición real del robot</li>
+    <li><strong>Estimación del usuario:</strong> trayectoria calculada por el algoritmo de VO</li>
+  </ul>
+
+  <p>
+    Esta comparación permite evaluar la precisión del algoritmo implementado.
+  </p>
+
+  <h3>Entrada de datos</h3>
+
+  <p>
+    Primero, el objetivo es que el ejercicio trabaje con <strong>videos como entrada principal</strong>, lo que permite probar
+    algoritmos de estimación sin necesidad de sensores reales.
+  </p>
+
+  <p>
+    A largo plazo, el objetivo es incorporar datasets como <strong>KITTI</strong> mediante rosbags,
+    lo que permitirá disponer no solo de imágenes, sino también de la posición real del vehículo.
+  </p>
+
+  <h3>Base teórica</h3>
+
+  <p>
+    Este trabajo se basa en estudios previos como el Trabajo de Fin de Máster de Pablo Asensio (2023),
+    donde se exploran técnicas avanzadas de odometría visual dentro del entorno de Robotics Academy.
+  </p>
+
+  <p>
+    <a href="https://gsyc.urjc.es/jmplaza/students/tfm-academy-odometria_visual-pablo_asensio-2023.pdf" target="_blank">
+      Ver documento de referencia
+    </a>
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    Visual Odometry permite estimar el movimiento de un robot únicamente a partir de imágenes,
+    lo que lo convierte en una técnica clave en robótica autónoma.
+    Este ejercicio servirá como base para comparar trayectorias estimadas frente a la posición real
+    y evolucionará hacia el uso de datasets reales como KITTI mediante rosbags.
+  </p>
+
+  <p>
+    <a href="semana11.html">← Volver a Semana 11</a>
+  </p>
+
+</div>
+
+</body>
+</html>

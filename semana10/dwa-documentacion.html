@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentación DWA</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Documentación del ejercicio Dynamic Window Approach (DWA)</h2>
+
+  <p>
+    Durante esta semana he elaborado la documentación de usuario del ejercicio
+    <strong>Dynamic Window Approach (DWA)</strong>, con el objetivo de explicar su funcionamiento,
+    APIs utilizadas y la lógica del algoritmo de navegación local.
+  </p>
+
+  <p>
+    La documentación completa oficial del ejercicio puede consultarse en el siguiente
+    <a href="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/dynamic_window_approach" target="_blank">
+      enlace
+    </a>
+  </p>
+
+  <h3>Objetivo del ejercicio</h3>
+
+  <p>
+    El objetivo es implementar un sistema de navegación local en el que el robot debe
+    alcanzar un objetivo evitando obstáculos de forma segura y suave.
+  </p>
+
+  <p>
+    Para ello se generan velocidades candidatas, se simulan trayectorias y se selecciona
+    la mejor opción según una función de coste.
+  </p>
+
+  <h3>Función de coste</h3>
+
+  <pre>
+score = α · heading + β · clearance + γ · velocity</pre>
+
+  <p>
+    Donde:
+  </p>
+
+  <ul>
+    <li><strong>Heading:</strong> alineación con el objetivo</li>
+    <li><strong>Clearance:</strong> distancia a obstáculos</li>
+    <li><strong>Velocity:</strong> velocidad de avance</li>
+  </ul>
+
+  <h3>APIs utilizadas</h3>
+
+  <ul>
+    <li><strong>HAL:</strong> control del robot (posición, láser, velocidades)</li>
+    <li><strong>WebGUI:</strong> visualización y objetivos</li>
+    <li><strong>Frequency:</strong> control de frecuencia de ejecución</li>
+  </ul>
+
+    <h3>Control del robot</h3>
+
+    <ul>
+    <li><strong>HAL.setV():</strong> establece la velocidad lineal del robot</li>
+    <li><strong>HAL.setW():</strong> establece la velocidad angular del robot</li>
+    </ul>
+
+    <p>
+    Estas funciones son las encargadas de aplicar el comando de movimiento seleccionado por el algoritmo DWA en cada iteración.
+    </p>
+
+    <h3>Sensor láser</h3>
+
+    <ul>
+    <li><strong>HAL.getLaserData():</strong> obtiene los datos del sensor láser del robot</li>
+    </ul>
+
+    <p>
+    El láser proporciona 180 medidas de distancia que representan los obstáculos alrededor del robot.
+    Estos datos se utilizan para calcular la variable <strong>clearance</strong> dentro de la función de coste del DWA.
+    </p>
+
+  <h3>Concepto clave</h3>
+
+  <p>
+    A diferencia de otros métodos, DWA trabaja directamente en el espacio de velocidades,
+    evaluando trayectorias futuras en lugar de fuerzas.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    Esta documentación permite entender de forma clara cómo funciona el algoritmo DWA,
+    desde la generación de velocidades hasta la selección de la mejor acción en cada ciclo. Es bastante mas extensa, pero solo quería remarcar algunos conceptos clave, el resto se puede apreciar en el enlace del principio.
+  </p>
+
+  <p>
+    <a href="semana10.html">← Volver a Semana 10</a>
+  </p>
+
+</div>
+
+</body>
+</html>
