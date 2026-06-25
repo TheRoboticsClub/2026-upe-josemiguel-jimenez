@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primer visor 2D para Visual Odometry</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Primer visor 2D para Visual Odometry</h2>
+
+  <p>
+    Durante las primeras fases de desarrollo del ejercicio de
+    <strong>Visual Odometry</strong>, todavía no estaba completamente definido
+    cuál sería el aspecto final del ejercicio ni cómo se representarían los
+    resultados obtenidos por el usuario. Por ello, se decidió avanzar primero
+    sobre los componentes más básicos de la infraestructura.
+  </p>
+
+  <h3>Selección y reproducción de vídeos</h3>
+
+  <p>
+    Uno de los primeros objetivos fue permitir que el usuario pudiera trabajar
+    con vídeos propios. Gracias a la infraestructura heredada de otros ejercicios,
+    se implementó un sistema mediante el cual el usuario puede seleccionar un
+    vídeo almacenado en su ordenador.
+  </p>
+
+  <p>
+    Una vez seleccionado y reproducido, las imágenes procesadas por el algoritmo
+    corresponden directamente a los fotogramas del vídeo escogido. Esto permitió
+    disponer rápidamente de una fuente de datos visual sobre la que comenzar a
+    desarrollar los algoritmos de odometría visual.
+  </p>
+
+  <h3>Primer prototipo de visor</h3>
+
+  <p>
+    Para visualizar los resultados obtenidos por el algoritmo se desarrolló una
+    primera versión de un visor propio en 2D.
+  </p>
+
+  <p>
+    Este visor recibe la estimación de movimiento calculada a partir de técnicas
+    de <strong>Optical Flow</strong>. A medida que el algoritmo estima el desplazamiento
+    entre fotogramas consecutivos, se calcula la diferencia de posición y se va
+    construyendo una trayectoria acumulada.
+  </p>
+
+  <p>
+    Dicha trayectoria se representa gráficamente en el visor 2D, permitiendo
+    observar de forma visual cómo evoluciona la posición estimada por el sistema
+    a lo largo del tiempo.
+  </p>
+
+  <ul>
+    <li>Selección de vídeos locales por parte del usuario.</li>
+    <li>Procesamiento de los fotogramas del vídeo seleccionado.</li>
+    <li>Estimación de movimiento mediante Optical Flow.</li>
+    <li>Representación de la trayectoria estimada en un visor 2D.</li>
+  </ul>
+
+  <h3>Limitaciones de esta primera versión</h3>
+
+  <p>
+    Aunque este visor permitió validar el flujo completo de procesamiento y
+    representación de resultados, se trata únicamente de un primer prototipo.
+  </p>
+
+  <p>
+    El objetivo final del ejercicio es disponer de un visor tridimensional donde
+    se represente la trayectoria estimada en un entorno 3D y, cuando se disponga
+    de datos de referencia (Ground Truth), compararla directamente con la
+    trayectoria real.
+  </p>
+
+  <p>
+    Esta evolución permitirá evaluar visualmente la precisión de los algoritmos
+    implementados por los usuarios y ofrecer una experiencia mucho más cercana a
+    escenarios reales de robótica y conducción autónoma.
+  </p>
+
+  <h3>Demostración</h3>
+
+  <p>
+    A continuación se muestra un vídeo donde puede observarse el funcionamiento
+    de esta primera versión del ejercicio, incluyendo la selección del vídeo y
+    la representación de la trayectoria estimada en el visor 2D.
+  </p>
+
+  <video controls style="width: 100%; border-radius: 10px; margin-top: 15px; border: 2px solid #2f7d3b;">
+    <source src="../videos/vo_visor_2d.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de vídeo.
+  </video>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    Este primer visor 2D permitió validar los componentes básicos del ejercicio
+    de Visual Odometry y comprobar que la estimación de movimiento podía
+    representarse gráficamente de forma sencilla. Aunque posteriormente sería
+    sustituido por una representación tridimensional más avanzada, constituyó
+    un paso importante para definir la arquitectura final del ejercicio.
+  </p>
+
+  <p>
+    <a href="semana12.html">← Volver a Semana 12</a>
+  </p>
+
+</div>
+
+</body>
+</html>

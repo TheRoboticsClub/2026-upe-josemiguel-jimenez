@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dataset KITTI para Visual Odometry</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Uso del dataset KITTI en Visual Odometry</h2>
+
+  <p>
+    Durante el desarrollo del ejercicio de <strong>Visual Odometry</strong> fue necesario
+    buscar un conjunto de datos que permitiera disponer de secuencias reales de conducción
+    sobre las que probar los algoritmos de estimación de movimiento. Para ello se decidió
+    utilizar el conocido <strong>dataset KITTI</strong>, una de las referencias más utilizadas
+    en investigación de conducción autónoma, visión por computador y robótica móvil.
+  </p>
+
+  <p>
+    La información completa del proyecto puede consultarse en el siguiente enlace:
+    <a href="https://www.cvlibs.net/datasets/kitti/" target="_blank">
+      Dataset KITTI
+    </a>
+  </p>
+
+  <h3>¿Qué es KITTI?</h3>
+
+  <p>
+    KITTI es un conjunto de datos cuyo objetivo es proporcionar datos
+    reales obtenidos desde vehículos equipados con distintos sensores para el desarrollo
+    y evaluación de algoritmos de percepción y navegación autónoma.
+  </p>
+
+  <p>
+    El dataset incluye información procedente de cámaras, sensores LiDAR, GPS e IMU,
+    así como datos de referencia (Ground Truth) que permiten evaluar el rendimiento
+    de los algoritmos desarrollados.
+  </p>
+
+  <h3>Uso de la sección de Odometría</h3>
+
+  <p>
+    Dentro de los distintos conjuntos de datos disponibles, para este ejercicio se ha
+    utilizado específicamente la sección de <strong>Visual Odometry</strong>.
+  </p>
+
+  <p>
+    Estas secuencias contienen imágenes capturadas por cámaras instaladas en un vehículo
+    en movimiento, junto con la trayectoria real seguida durante el recorrido.
+  </p>
+
+  <p>
+    Gracias a ello es posible desarrollar algoritmos capaces de estimar la posición
+    del vehículo únicamente a partir de las imágenes y posteriormente comparar dicha
+    estimación con la trayectoria real.
+  </p>
+
+  <h3>Conversión de secuencias de imágenes a vídeo</h3>
+
+  <p>
+    Aunque KITTI proporciona las secuencias en forma de imágenes individuales,
+    la arquitectura planteada para el ejercicio requiere que la entrada sea un vídeo.
+  </p>
+
+  <p>
+    Por este motivo se decidió generar vídeos a partir de las secuencias de imágenes
+    originales. De esta forma el usuario puede seleccionar un vídeo desde su ordenador
+    y procesarlo exactamente igual que ocurriría con cualquier otra grabación.
+  </p>
+
+  <p>
+    Esta aproximación simplifica la interacción con el ejercicio y permite reutilizar
+    la infraestructura desarrollada para la carga y reproducción de vídeos en Unibotics.
+  </p>
+
+  <h3>Importancia de la matriz de calibración</h3>
+
+  <p>
+    Una de las principales ventajas de utilizar KITTI es que proporciona los parámetros
+    de calibración de las cámaras utilizadas durante la captura de los datos.
+  </p>
+
+  <p>
+    Entre estos parámetros se encuentra la conocida <strong>matriz intrínseca K</strong>,
+    que describe las características ópticas de la cámara, como la distancia focal y
+    el centro de la imagen.
+  </p>
+
+  <p>
+    Esta información resulta fundamental para los algoritmos de Visual Odometry, ya que
+    permite calcular correctamente la geometría entre imágenes consecutivas y estimar
+    el movimiento relativo de la cámara.
+  </p>
+
+  <p>
+    Sin una calibración adecuada, la estimación de la trayectoria sería mucho menos
+    precisa e incluso podría resultar incorrecta.
+  </p>
+
+  <h3>Perspectiva futura: generación de rosbags</h3>
+
+  <p>
+    Aunque inicialmente se ha trabajado con vídeos generados a partir de las secuencias
+    de imágenes, el objetivo a largo plazo es utilizar directamente información procedente
+    de rosbags.
+  </p>
+
+  <p>
+    Para ello será especialmente útil la sección de <strong>Raw Data</strong> de KITTI,
+    que proporciona datos completos de sensores reales sincronizados durante la captura.
+  </p>
+
+  <p>
+    Estos datos podrán utilizarse para generar rosbags que incluyan no solo las imágenes,
+    sino también información adicional como la posición real del vehículo o datos de otros
+    sensores, permitiendo crear ejercicios más completos y realistas.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    El dataset KITTI se ha convertido en una pieza fundamental para el desarrollo del
+    ejercicio de Visual Odometry. Sus secuencias de imágenes permiten generar los vídeos
+    utilizados como entrada, mientras que la información de calibración y las trayectorias
+    Ground Truth proporcionan los datos necesarios para implementar y evaluar los algoritmos
+    de estimación de movimiento. Además, sus conjuntos de datos más completos servirán en el
+    futuro como base para la generación de rosbags y la ampliación de las funcionalidades
+    del ejercicio.
+  </p>
+
+  <p>
+    <a href="semana13.html">← Volver a Semana 13</a>
+  </p>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Código de referencia para Visual Odometry</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-top: 5px;
+    }
+
+    pre {
+      background: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Código de referencia para Visual Odometry</h2>
+
+  <p>
+    Durante las primeras fases del desarrollo del ejercicio de
+    <strong>Visual Odometry</strong>, un compañero nos facilitó una implementación
+    funcional sobre la que poder apoyarnos para comprender mejor los distintos
+    pasos necesarios para estimar la trayectoria de una cámara a partir de una
+    secuencia de imágenes.
+  </p>
+
+  <p>
+    El objetivo no era reutilizar directamente esta solución, sino analizar su
+    funcionamiento y utilizarla como guía para diseñar una versión adaptada a la
+    infraestructura de Unibotics.
+  </p>
+
+  <h3>1. Seguimiento de características mediante Optical Flow</h3>
+
+  <p>
+    El primer paso consiste en detectar puntos característicos en una imagen y
+    seguirlos en los fotogramas siguientes utilizando el algoritmo de
+    <strong>Lucas-Kanade Optical Flow</strong>.
+  </p>
+
+  <pre>
+cv::goodFeaturesToTrack(...)
+cv::calcOpticalFlowPyrLK(...)</pre>
+
+  <p>
+    Gracias a estas correspondencias entre imágenes consecutivas es posible
+    estimar cómo se ha desplazado la cámara entre dos instantes de tiempo.
+  </p>
+
+  <h3>2. Cálculo de la matriz esencial</h3>
+
+  <p>
+    Una vez obtenidas las correspondencias válidas entre puntos, el siguiente
+    paso consiste en calcular la matriz esencial.
+  </p>
+
+  <pre>
+cv::findEssentialMat(...)</pre>
+
+  <p>
+    Esta matriz relaciona las observaciones de un mismo punto en dos imágenes
+    distintas y contiene información sobre la rotación y traslación relativa
+    entre ambas posiciones de la cámara.
+  </p>
+
+  <h3>3. Recuperación de la pose relativa</h3>
+
+  <p>
+    A partir de la matriz esencial se obtiene la pose relativa de la cámara,
+    es decir, la rotación y traslación que explican el movimiento observado.
+  </p>
+
+  <pre>
+cv::recoverPose(...)</pre>
+
+  <p>
+    Este paso permite estimar el movimiento entre dos fotogramas consecutivos,
+    aunque la traslación obtenida únicamente es conocida hasta un factor de
+    escala.
+  </p>
+
+  <h3>4. Construcción de la trayectoria global</h3>
+
+  <p>
+    Las transformaciones calculadas en cada iteración se van acumulando para
+    construir una trayectoria global de la cámara.
+  </p>
+
+  <pre>
+t_nueva = t_prev + R_prev * t_cv_scaled
+R_nueva = R_prev * R_cv_ros</pre>
+
+  <p>
+    De esta forma, cada movimiento relativo se integra sobre la posición
+    estimada previamente para obtener una trayectoria continua.
+  </p>
+
+  <h3>5. Filtrado de ruido</h3>
+
+  <p>
+    Las estimaciones obtenidas directamente suelen contener ruido debido a
+    errores en las correspondencias o a movimientos pequeños entre imágenes.
+  </p>
+
+  <p>
+    Por este motivo la referencia aplica filtros de suavizado tanto a la
+    posición como a la orientación antes de publicarlas.
+  </p>
+
+  <pre>
+camera_position =
+    alpha * t_nueva +
+    (1 - alpha) * camera_position</pre>
+
+  <p>
+    Esto permite generar trayectorias más estables y visualmente coherentes.
+  </p>
+
+  <h3>6. Visualización en ROS</h3>
+
+  <p>
+    Finalmente, la posición estimada se publica mediante transformaciones TF
+    y marcadores visuales de ROS.
+  </p>
+
+  <pre>
+tf_broadcaster_->sendTransform(...)
+marker_pub_->publish(...)</pre>
+
+  <p>
+    Gracias a ello es posible visualizar en RViz la trayectoria reconstruida
+    por el algoritmo.
+  </p>
+
+  <h3>Aplicación al nuevo ejercicio</h3>
+
+  <p>
+    Esta implementación sirvió como punto de partida para comprender los pasos
+    fundamentales de un sistema de Visual Odometry:
+  </p>
+
+  <ul>
+    <li>Detección de características.</li>
+    <li>Seguimiento mediante Optical Flow.</li>
+    <li>Cálculo de la matriz esencial.</li>
+    <li>Recuperación de la pose relativa.</li>
+    <li>Construcción de la trayectoria global.</li>
+    <li>Visualización de resultados.</li>
+  </ul>
+
+  <p>
+    A partir de estas ideas se comenzó a desarrollar una versión propia
+    adaptada a Unibotics, sustituyendo la visualización en RViz por visores
+    integrados en la plataforma y utilizando vídeos como fuente de entrada
+    para los primeros prototipos.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    Disponer de esta referencia permitió comprender la estructura general de
+    un sistema de odometría visual y facilitó el diseño inicial del nuevo
+    ejercicio. Aunque la implementación final difiere de la original, gran
+    parte de la arquitectura conceptual utilizada proviene de este trabajo
+    previo.
+  </p>
+
+  <p>
+    <a href="semana12.html">← Volver a Semana 12</a>
+  </p>
+
+</div>
+
+</body>
+</html>

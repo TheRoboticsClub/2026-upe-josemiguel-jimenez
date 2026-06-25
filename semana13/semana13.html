@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 13 - Blog Prácticas</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+    }
+
+    .week-container {
+      max-width: 1000px;
+      margin: 30px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .week-header {
+      background-color: #2f7d3b;
+      color: white;
+      padding: 20px;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .week-content {
+      background-color: #a7d7a2;
+      padding: 30px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .intro {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .subpage-card {
+      flex: 1;
+      min-width: 280px;
+      background-color: #d2f0c6;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .subpage-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    }
+
+    .subpage-card h3 {
+      margin-top: 0;
+      color: #2f7d3b;
+    }
+
+    /* LINK WRAPPER */
+    a.subpage-link {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex: 1;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .back-link {
+      display: block;
+      margin: 20px auto;
+      text-align: center;
+      color: #2f7d3b;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 800px) {
+      .week-content {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="week-container">
+
+    <div class="week-header">
+      Semana 13 ~ 11/05 - 15/05
+    </div>
+
+    <div class="week-content">
+
+      <div class="intro">
+        <p>
+          En esta semana se ha avanzado significativamente en el ejercicio de Visual Odometry,
+          incorporando nuevas funcionalidades y mejorando la visualización del sistema.
+        </p>
+      </div>
+
+      <!-- ARRIBA DER -->
+      <a href="visor-3d.html" class="subpage-link">
+        <div class="subpage-card">
+          <h3>Visor 3D</h3>
+          <p>
+            Evolución del visor desde 2D a una representación 3D del movimiento de la cámara. Visualización del Ground Truth en este nuevo visor.
+          </p>
+        </div>
+      </a>
+
+      <!-- ABAJO -->
+      <a href="dataset-kitti.html" class="subpage-link full-width">
+        <div class="subpage-card">
+          <h3>Dataset KITTI</h3>
+          <p>
+            Uso del dataset KITTI como entrada en formato vídeo para pruebas del ejercicio.
+          </p>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+
+  <a href="index.html" class="back-link">← Volver al blog principal</a>
+
+</body>
+</html>

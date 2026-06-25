@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo visor 3D para Visual Odometry</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Evolución hacia un visor 3D</h2>
+
+  <p>
+    Tras desarrollar la primera versión del ejercicio de <strong>Visual Odometry</strong>,
+    comencé a replantear cómo debía ser la representación final de los resultados.
+    Aunque el visor 2D inicial permitía visualizar la trayectoria estimada por el
+    algoritmo, rápidamente se hizo evidente que no era la solución más adecuada
+    para un problema cuya naturaleza es tridimensional.
+  </p>
+
+  <p>
+    Por este motivo se decidió descartar el visor 2D desarrollado previamente y
+    comenzar la implementación de un nuevo visor completamente en 3D.
+  </p>
+
+  <h3>Objetivos del nuevo visor</h3>
+
+  <p>
+    La idea principal era disponer de una representación más cercana a la realidad,
+    donde pudiéramos visualizar no solo la trayectoria estimada por el usuario,
+    sino también la trayectoria real del vehículo cuando estuviera disponible.
+  </p>
+
+  <p>
+    Esto permitiría comparar visualmente ambos recorridos y evaluar de forma mucho
+    más intuitiva la precisión de los algoritmos implementados.
+  </p>
+
+  <ul>
+    <li>Representar la trayectoria estimada por el usuario.</li>
+    <li>Representar la trayectoria real (Ground Truth).</li>
+    <li>Visualizar ambas trayectorias en un entorno tridimensional.</li>
+    <li>Facilitar la comparación entre estimación y realidad.</li>
+  </ul>
+
+  <h3>Obtención del Ground Truth</h3>
+
+  <p>
+    Uno de los principales retos en esta etapa era obtener la posición real del
+    vehículo para poder mostrarla en el visor.
+  </p>
+
+  <p>
+    Como todavía no se disponía de soporte para rosbags, se aprovechó la estructura
+    del dataset KITTI, que incluye un fichero denominado <strong>poses.txt</strong>.
+    Este fichero contiene la trayectoria real completa del vehículo durante la
+    secuencia.
+  </p>
+
+  <p>
+    La solución adoptada consistió en leer directamente dicho fichero desde el
+    propio WebGUI y utilizar sus datos para construir la trayectoria Ground Truth
+    dentro del visor 3D.
+  </p>
+
+  <p>
+    Esta fue una solución temporal que permitió avanzar en el desarrollo. La idea
+    a largo plazo era obtener esta información directamente desde los rosbags,
+    eliminando la necesidad de leer archivos externos.
+  </p>
+
+  <h3>Visualización de la trayectoria completa</h3>
+
+  <p>
+    Una de las primeras pruebas consistió en representar la trayectoria completa
+    del Ground Truth cargada desde el fichero <strong>poses.txt</strong>.
+  </p>
+
+  <img src="../images/gt_path.png" alt="Trayectoria Ground Truth completa">
+
+  <p>
+    Esta representación permitió comprobar que la lectura de datos y la conversión
+    al sistema de coordenadas utilizado por el visor se realizaban correctamente.
+  </p>
+
+  <h3>Representación durante la ejecución</h3>
+
+  <p>
+    Una vez validada la carga completa del recorrido, se implementó la actualización
+    progresiva de la trayectoria durante la reproducción de la secuencia.
+  </p>
+
+  <p>
+    De esta forma el visor permitiria mostrar cómo avanza el vehículo a medida que se procesan
+    los fotogramas, reproduciendo visualmente el recorrido realizado, esto cuando crearamos la solucion que estime la posicion, y la infraestructura proporcionara una funcion para representarla.
+  </p>
+
+  <video controls style="width: 100%; border-radius: 10px; margin-top: 15px; border: 2px solid #2f7d3b;">
+    <source src="../videos/vo_visor_3d.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de vídeo.
+  </video>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    El desarrollo de este nuevo visor supuso un cambio importante respecto a la
+    primera versión del ejercicio. Se abandonó la representación bidimensional
+    inicial para adoptar una visualización en 3D mucho más adecuada para los
+    problemas de odometría visual.
+  </p>
+
+  <p>
+    Además, la incorporación del Ground Truth obtenido a partir del dataset KITTI
+    permitió sentar las bases para futuras comparaciones entre la trayectoria
+    estimada por el usuario y la trayectoria real del vehículo, una de las
+    funcionalidades principales previstas para la versión final del ejercicio.
+  </p>
+
+  <p>
+    <a href="semana13.html">← Volver a Semana 13</a>
+  </p>
+
+</div>
+
+</body>
+</html>
