@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Representación de la pose estimada</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    pre {
+      background-color: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+  <h2>Representación de la pose estimada</h2>
+
+  <p>
+    Tras disponer de un visor 3D capaz de representar la trayectoria real del
+    vehículo (Ground Truth), el siguiente paso consistió en proporcionar un
+    mecanismo para que el usuario pudiera visualizar los resultados generados por
+    su propio algoritmo de odometría visual.
+  </p>
+
+  <p>
+    Para ello se incorporó una nueva función dentro de la infraestructura del
+    ejercicio que permite enviar la pose estimada en cada instante de la ejecución.
+    A partir de esta información, el visor actualiza automáticamente la escena 3D
+    mostrando la evolución de la trayectoria estimada.
+  </p>
+
+  <h3>Envío de la pose estimada</h3>
+
+    <p>
+    La interfaz expuesta al usuario es muy sencilla. Una vez que el algoritmo
+    calcula la posición estimada del vehículo, basta con invocar la función
+    proporcionada por la infraestructura para enviar el nuevo punto al visor.
+    </p>
+
+<pre>def showEstimatedPoint(self, point):
+
+    if point is None:
+        return
+
+    self.payload["estimated_point"] = [
+        float(point[0]),
+        float(point[1]),
+        float(point[2])
+]</pre>
+
+    <p>
+    Esta función encapsula la comunicación con el WebGUI, de modo que el usuario
+    únicamente debe proporcionar las coordenadas estimadas sin preocuparse de la
+    representación gráfica.
+    </p>
+
+  <h3>Representación en el visor 3D</h3>
+
+  <p>
+Cada nueva posición recibida se transforma al sistema de coordenadas empleado
+por el visor y se añade automáticamente a la trayectoria estimada,
+representándola mediante una línea roja en la escena 3D.
+</p>
+
+<pre>if (update.estimated_point?.length === 3) {
+  const raw = update.estimated_point;
+
+  const scaled = [
+    -raw[0] * GT_SCALE,
+     raw[1] * GT_SCALE,
+     raw[2] * GT_SCALE
+  ];
+
+  setEstTrajectory((prev) => [
+    ...prev,
+    [scaled[0], scaled[1], scaled[2], 255, 0, 0],
+  ]);
+}</pre>
+
+<p>
+En cada actualización se añade un nuevo punto a la trayectoria estimada,
+que se dibuja en color rojo para diferenciarla visualmente de la trayectoria
+Ground Truth. Gracias a esta actualización incremental, el recorrido va
+construyéndose en tiempo real conforme el algoritmo procesa la secuencia.
+</p>
+
+  <h3>Visualización durante la ejecución</h3>
+
+  <p>
+    Gracias a esta funcionalidad, el visor deja de ser únicamente una herramienta
+    para visualizar la trayectoria real y pasa a convertirse en un entorno donde
+    es posible observar en tiempo real el comportamiento del algoritmo
+    desarrollado por el usuario.
+  </p>
+
+  <!-- Sustituir por una captura o vídeo del resultado -->
+  <img src="../images/estimated_path.png" alt="Trayectoria estimada en rojo">
+
+  <p>
+    A medida que se procesan los fotogramas de la secuencia, cada nueva pose
+    estimada se incorpora a la escena, construyendo progresivamente una línea roja
+    que representa el recorrido calculado por el algoritmo. Esto facilita la
+    comparación visual con la trayectoria Ground Truth y permite detectar de forma
+    intuitiva posibles desviaciones o errores acumulados.
+  </p>
+
+  <h3>Conclusión</h3>
+
+  <p>
+    La incorporación de esta nueva funcionalidad supone un paso importante en el
+    desarrollo del ejercicio, ya que permite integrar directamente los resultados
+    obtenidos por el algoritmo del usuario dentro del visor 3D.
+  </p>
+
+  <p>
+    <a href="semana14.html">← Volver a Semana 14</a>
+  </p>
+
+</div>
+
+</body>
+</html>

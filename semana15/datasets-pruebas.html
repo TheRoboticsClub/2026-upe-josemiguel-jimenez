@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pruebas con datasets KITTI</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+<h2>Pruebas con datasets KITTI</h2>
+
+<p>
+Durante esta semana se ha trabajado en la fase de validación del algoritmo de
+Visual Odometry utilizando distintos conjuntos de datos del dataset KITTI.
+El objetivo principal de esta etapa ha sido evaluar el comportamiento del
+algoritmo en escenarios variados, con diferentes niveles de dificultad,
+condiciones de iluminación y tipos de movimiento del vehículo.
+</p>
+
+<p>
+El dataset KITTI ofrece dos secciones principales ampliamente utilizadas en
+tareas de odometría visual: <strong>Odometry</strong> y <strong>Raw Data</strong>.
+Ambas contienen secuencias grabadas desde un vehículo en movimiento, pero con
+características ligeramente diferentes que permiten probar el algoritmo en
+contextos complementarios.
+</p>
+
+<h3>Uso de las secuencias del dataset</h3>
+
+<p>
+Dentro de ambas secciones del dataset se dispone de múltiples secuencias que
+representan recorridos urbanos, carreteras abiertas y situaciones con mayor o
+menor complejidad visual. Estas secuencias han sido utilizadas para generar
+diferentes vídeos de prueba, reproduciendo el flujo de imágenes original del
+vehículo.
+</p>
+
+<p>
+El proceso consistió en extraer las imágenes de cada secuencia y generar
+vídeos reproducibles que simulan la ejecución del sistema en tiempo real,
+permitiendo así probar la solución de Visual Odometry de forma controlada.
+</p>
+
+<h3>Generación de vídeos de prueba</h3>
+
+<p>
+A partir de las secuencias seleccionadas del dataset KITTI se generaron varios
+vídeos que posteriormente fueron utilizados como entrada del algoritmo. Cada
+vídeo representa un escenario diferente dentro del entorno de conducción
+capturado por el vehículo.
+</p>
+
+<p>
+Esto permite evaluar aspectos como la estabilidad del seguimiento, la
+acumulación de error en trayectorias largas o el comportamiento del algoritmo
+ante cambios bruscos de iluminación o textura en la escena.
+</p>
+
+<h3>Ejemplos de secuencias utilizadas</h3>
+
+<p>
+A continuación se muestran algunos de los vídeos generados a partir de las
+secuencias del dataset KITTI. Cada uno de ellos representa un entorno distinto
+y permite evaluar el rendimiento del algoritmo en condiciones variadas.
+</p>
+
+<!-- VIDEO 1 -->
+<video controls>
+  <source src="../videos/kitti_seq_01.mp4" type="video/mp4">
+  Tu navegador no soporta la reproducción de vídeo.
+</video>
+
+<!-- VIDEO 2 -->
+<video controls>
+  <source src="../videos/kitti_seq_02.mp4" type="video/mp4">
+  Tu navegador no soporta la reproducción de vídeo.
+</video>
+
+<!-- VIDEO 3 -->
+<video controls>
+  <source src="../videos/kitti_seq_03.mp4" type="video/mp4">
+  Tu navegador no soporta la reproducción de vídeo.
+</video>
+
+<p>
+Estos videos son un extra, ya que para nuestro algoritmo hemos estado usando uno mucho mas completo, sin embargo estos tres nos sirven tambien de apoyo para comprobar que nuestra solucion es suficientemente robusta para funcionar en la mayoria de las situaciones.
+</p>
+
+<h3>Conclusión</h3>
+
+<p>
+El uso de distintos datasets del KITTI ha permitido ampliar significativamente
+la fase de pruebas del algoritmo de Visual Odometry. Gracias a la generación
+de vídeos a partir de las secuencias disponibles en las secciones de
+<strong>Odometry</strong> y <strong>Raw Data</strong>, ha sido posible evaluar
+el comportamiento del sistema en múltiples escenarios, lo que ayuda a detectar
+posibles debilidades y validar la robustez de la solución desarrollada.
+</p>
+
+<p>
+<a href="semana15.html">← Volver a Semana 15</a>
+</p>
+
+</div>
+
+</body>
+</html>

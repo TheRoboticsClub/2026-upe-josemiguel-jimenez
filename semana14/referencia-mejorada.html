@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mejora de la solución de referencia</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    pre {
+      background-color: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+<h2>Mejora de la solución de referencia</h2>
+
+<p>
+Una vez desarrollada la primera versión funcional del algoritmo de Visual
+Odometry, el resto de esta semana se centró en mejorar la solución de
+referencia. Aunque la estructura general del
+algoritmo ya era estable, todavía era necesario ajustar distintos parámetros
+para conseguir un comportamiento más robusto frente a cambios en la escena y
+reducir el ruido acumulado durante la estimación de la trayectoria.
+</p>
+
+<p>
+El objetivo principal fue encontrar un equilibrio entre precisión,
+estabilidad y coste computacional, analizando cómo influía cada parámetro en
+el resultado final del algoritmo.
+</p>
+
+<h3>Detección de características</h3>
+
+<p>
+El primer bloque sobre el que se trabajó fue la detección de puntos de
+interés. La cantidad y calidad de las características detectadas influye de
+forma directa en la estimación del movimiento entre imágenes.
+</p>
+
+<pre><code>MIN_PTS = 120
+MAX_PTS = 600
+
+prev_pts = cv2.goodFeaturesToTrack(
+    gray,
+    maxCorners=MAX_PTS,
+    qualityLevel=0.01,
+    minDistance=8,
+    blockSize=7
+)</code></pre>
+
+<p>
+Uno de los parámetros más importantes es <strong>MAX_PTS</strong>, que limita el
+número máximo de esquinas detectadas. Un valor elevado proporciona más
+información para estimar el movimiento y suele producir resultados más
+robustos, aunque incrementa el tiempo de procesamiento. Por el contrario, un
+valor demasiado bajo reduce la carga computacional, pero puede provocar que
+la estimación pierda precisión al disponer de menos correspondencias entre
+fotogramas.
+</p>
+
+<p>
+También se ajustó <strong>MIN_PTS</strong>, encargado de determinar cuándo deben
+detectarse nuevas características. Si este valor es demasiado pequeño, el
+algoritmo reutiliza los mismos puntos durante demasiado tiempo, aumentando el
+riesgo de perder el seguimiento. Valores mayores permiten renovar con mayor
+frecuencia las características, mejorando la robustez del sistema.
+</p>
+
+<p>
+Finalmente, parámetros como <strong>qualityLevel</strong> o
+<strong>minDistance</strong> permiten controlar la calidad mínima de las
+esquinas detectadas y la separación entre ellas. Un criterio demasiado
+estricto reduce el número de puntos disponibles, mientras que uno demasiado
+permisivo introduce características poco fiables que pueden empeorar la
+estimación posterior.
+</p>
+
+<h3>Ajuste del Optical Flow</h3>
+
+<p>
+Una vez detectadas las características, el siguiente paso consiste en seguir
+su movimiento entre imágenes mediante el algoritmo de Lucas-Kanade. Durante
+esta etapa también fue necesario ajustar varios parámetros para conseguir un
+seguimiento estable.
+</p>
+
+<pre><code>lk_params = dict(
+    winSize=(21, 21),
+    maxLevel=3,
+    criteria=(
+        cv2.TERM_CRITERIA_EPS |
+        cv2.TERM_CRITERIA_COUNT,
+        30,
+        0.01
+    )
+)</code></pre>
+
+<p>
+El tamaño de la ventana de búsqueda (<strong>winSize</strong>) determina la
+región utilizada para localizar cada característica en la imagen siguiente.
+Ventanas pequeñas ofrecen mayor precisión cuando el movimiento entre
+fotogramas es reducido, mientras que ventanas mayores permiten seguir puntos
+que experimentan desplazamientos más grandes.
+</p>
+
+<p>
+Otro parámetro relevante es <strong>maxLevel</strong>, que controla el número
+de niveles de la pirámide de imágenes utilizada por Lucas-Kanade. Incrementar
+este valor mejora el seguimiento cuando existen movimientos importantes entre
+fotogramas, aunque también aumenta el tiempo necesario para procesar cada
+imagen.
+</p>
+
+<h3>Estimación de la pose</h3>
+
+<p>
+Tras obtener las correspondencias entre imágenes, el algoritmo calcula la
+matriz esencial utilizando RANSAC para eliminar correspondencias erróneas y
+recuperar posteriormente la rotación y la traslación entre ambos fotogramas.
+</p>
+
+<pre><code>E, mask = cv2.findEssentialMat(
+    p1, p2, K,
+    method=cv2.RANSAC,
+    prob=0.999,
+    threshold=1.0
+)</code></pre>
+
+<p>
+Uno de los parámetros que más influencia tiene sobre el resultado es
+<strong>threshold</strong>. Valores pequeños hacen que RANSAC sea mucho más
+estricto, rechazando un mayor número de correspondencias. Esto reduce la
+presencia de outliers, aunque también puede provocar que no existan puntos
+suficientes para estimar correctamente la pose. En cambio, valores elevados
+aceptan un mayor número de correspondencias, aumentando el riesgo de que
+algunas incorrectas afecten a la estimación final.
+</p>
+
+<p>
+Por su parte, el parámetro <strong>prob</strong> indica la probabilidad de que
+RANSAC encuentre un modelo correcto. Cuanto mayor es este valor, más robusta
+resulta la estimación, aunque el algoritmo necesita realizar un mayor número
+de iteraciones.
+</p>
+
+<h3>Escala y suavizado temporal</h3>
+
+<p>
+La odometría visual monocular únicamente permite recuperar la dirección del
+movimiento, pero no su escala absoluta. Para representar la trayectoria fue
+necesario introducir un factor de escala que ajusta el desplazamiento
+integrado en cada iteración.
+</p>
+
+<pre><code>scale = 0.8
+
+t_history.append(t_world)
+
+if len(t_history) > 5:
+    t_history.pop(0)
+
+t = np.median(np.stack(t_history), axis=0)</code></pre>
+
+<p>
+Modificar el valor de <strong>scale</strong> hace que la trayectoria recorrida
+sea más larga o más corta dentro del visor. Aunque este parámetro no altera
+la dirección del movimiento, sí afecta al tamaño global del recorrido
+representado.
+</p>
+
+<p>
+Además, para reducir pequeñas oscilaciones entre fotogramas consecutivos se
+incorporó un filtro temporal basado en la mediana de las últimas
+estimaciones. Un historial demasiado pequeño apenas elimina el ruido,
+mientras que uno excesivamente grande produce trayectorias muy suaves, pero
+menos reactivas frente a cambios rápidos en el movimiento.
+</p>
+
+<h3>Resultado final</h3>
+
+<p>
+Tras múltiples pruebas ajustando estos parámetros fue posible obtener una
+solución de referencia considerablemente más estable. El algoritmo mantiene
+la estructura clásica basada en detección de características, Optical Flow,
+estimación de la matriz esencial y recuperación de la pose, pero el ajuste
+cuidadoso de cada uno de sus parámetros permitió mejorar notablemente la
+calidad de la trayectoria estimada.
+</p>
+
+<video controls style="width: 100%; border-radius: 10px; margin-top: 15px; border: 2px solid #2f7d3b;">
+    <source src="../videos/solucion_mejorada_VO.mp4" type="video/mp4">
+    Tu navegador no soporta la reproducción de vídeo.
+</video>
+
+<h3>Conclusión</h3>
+
+<p>
+Aunque la base de la solucion era la misma, algunas
+modificaciones en la detección de características, el seguimiento mediante
+Optical Flow, la estimación de la pose y el suavizado temporal dieron lugar a
+una trayectoria mucho más estable y adecuada para servir como solución de
+referencia dentro del ejercicio de Visual Odometry. Se podria si quisieramos seguir ajustando parametros hasta dar con la solucion perfecta, pero decidi que la que teniamos resolvia bastante bien el problema.
+</p>
+
+<p>
+<a href="semana14.html">← Volver a Semana 14</a>
+</p>
+
+</div>
+
+</body>
+</html>

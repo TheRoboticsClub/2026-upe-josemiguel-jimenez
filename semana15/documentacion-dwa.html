@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentación DWA</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    pre {
+      background-color: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="post">
+
+<h2>Documentación del ejercicio DWA</h2>
+
+<p>
+Se ha finalizado la documentación del ejercicio
+<strong>Dynamic Window Approach (DWA)</strong> dentro de Robotics Academy
+Premium. El objetivo principal ha sido completar y estructurar toda la
+información necesaria para que los alumnos puedan comprender tanto la
+implementación como el funcionamiento teórico del algoritmo. La documentacion se puede consultar en el siguiente enlace.
+</p>
+
+<p>
+<a href="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/dynamic_window_approach" target="_blank">
+Dynamic Window Approach - Robotics Academy
+</a>
+</p>
+
+
+<p>
+La documentación se ha revisado y ampliado para asegurar que cubre todos los
+aspectos del ejercicio, desde la API utilizada hasta la explicación detallada
+del propio algoritmo de navegación local basado en DWA.
+</p>
+
+<h3>Contenido de la documentación</h3>
+
+<p>
+La documentación final del ejercicio incluye varios bloques principales que
+guían al estudiante durante su desarrollo:
+</p>
+
+<ul>
+  <li>Descripción del objetivo del ejercicio.</li>
+  <li>API de control del robot y del entorno WebGUI.</li>
+  <li>Conversión de sistemas de coordenadas.</li>
+  <li>Procesamiento de datos del sensor láser.</li>
+  <li>Fundamentos teóricos del Dynamic Window Approach.</li>
+  <li>Implementación del algoritmo paso a paso.</li>
+  <li>Funciones de depuración y visualización.</li>
+</ul>
+
+<h3>Aspectos clave del algoritmo</h3>
+
+<p>
+Uno de los puntos más importantes de la documentación es la explicación del
+funcionamiento del algoritmo DWA, donde el robot evalúa múltiples trayectorias
+simuladas en el espacio de velocidades para seleccionar la mejor acción
+posible en cada iteración.
+</p>
+
+<p>
+El proceso se basa en tres ideas principales:
+</p>
+
+<ul>
+  <li>Generación de velocidades candidatas dentro de una ventana dinámica.</li>
+  <li>Simulación de trayectorias futuras para cada par (v, w).</li>
+  <li>Evaluación mediante una función de coste ponderada.</li>
+</ul>
+
+<p>
+Este enfoque permite que el robot tome decisiones locales en tiempo real,
+adaptándose al entorno sin necesidad de un plan global previo.
+</p>
+
+<h3>Vídeo documentacion</h3>
+
+<p>
+El siguiente vídeo es el mismo que realizamos unas semanas atras, pero que hemos incorporado tambien a la documentacion para que los usuarios puedan echar un vistazo al objetivo antes de empezar a desarrollar su ejercicio.
+</p>
+
+<video controls>
+  <source src="../videos/DWA_final_video.mp4" type="video/mp4">
+  Tu navegador no soporta la reproducción de vídeo.
+</video>
+
+
+<h3>Conclusión</h3>
+
+<p>
+Con esta tarea se ha completado la documentación del ejercicio DWA,
+asegurando que los usuarios dispongan de una guía clara y estructurada que
+les permita comprender tanto la base teórica como la implementación práctica
+del algoritmo de navegación local.
+</p>
+
+<p>
+<a href="semana15.html">← Volver a Semana 15</a>
+</p>
+
+</div>
+
+</body>
+</html>
