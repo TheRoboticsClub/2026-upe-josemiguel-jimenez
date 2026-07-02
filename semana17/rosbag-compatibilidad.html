@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compatibilidad de rosbags entre versiones de ROS</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    pre {
+      background-color: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+<h2>Compatibilidad de rosbags entre versiones de ROS</h2>
+
+<p>
+Durante esta semana se detectó un problema relacionado con la reproducción de
+los rosbags generados para el ejercicio de Visual Odometry. Aunque los
+archivos funcionaban correctamente en mi ordenador y era posible reproducir
+las imágenes sin ningún inconveniente, al utilizarlos dentro de Unibotics la
+reproducción fallaba y el ejercicio no recibía ningún dato.
+</p>
+
+<h3>Localización del problema</h3>
+
+<p>
+La primera comprobación consistió en verificar que los rosbags no estuvieran
+corruptos. Para ello se reprodujeron localmente mediante la herramienta de ROS,
+confirmando que los topics de la cámara se publicaban correctamente y que las
+imágenes podían visualizarse sin problemas.
+</p>
+
+<p>
+Esto indicaba que el problema no estaba en la grabación de los datos, sino en
+alguna diferencia entre el entorno de desarrollo local y el entorno utilizado
+por Unibotics.
+</p>
+
+<h3>Incompatibilidad entre versiones de ROS</h3>
+
+<p>
+Tras analizar el problema se descubrió que la causa era una incompatibilidad
+entre las versiones de ROS utilizadas. En mi equipo de desarrollo se estaba
+trabajando con <strong>ROS 2 Jazzy</strong>, mientras que Unibotics emplea
+<strong>ROS 2 Humble</strong>.
+</p>
+
+<p>
+Los rosbags habían sido grabados utilizando Jazzy y, aunque podían
+reproducirse correctamente en esa misma versión, presentaban problemas al
+intentar utilizarlos desde un entorno basado en Humble. Como consecuencia, el
+ejercicio no era capaz de acceder a las imágenes almacenadas en el rosbag.
+</p>
+
+<p>Entorno local  → ROS 2 Jazzy   ✓ Reproducción correcta</p>
+
+<p>Unibotics      → ROS 2 Humble  ✗ Error al reproducir el rosbag</p>
+<h3>Solución adoptada</h3>
+
+<p>
+Una vez identificada la causa del problema, la solución consistió en volver a
+generar todos los rosbags utilizando directamente <strong>ROS 2 Humble</strong>,
+la misma distribución empleada por Unibotics.
+</p>
+
+<p>
+Tras repetir el proceso de grabación, los nuevos rosbags pudieron reproducirse
+correctamente tanto desde la línea de comandos como dentro del propio
+ejercicio, eliminando completamente los problemas de compatibilidad detectados.
+</p>
+
+<h3>Conclusión</h3>
+
+<p>
+Este problema puso de manifiesto la importancia de mantener la misma versión
+de ROS en todas las fases del desarrollo. Aunque los rosbags parecían válidos
+durante las pruebas locales, utilizar una distribución distinta a la empleada
+en el entorno de ejecución provocaba incompatibilidades que impedían su uso.
+Una vez regenerados utilizando ROS 2 Humble, los rosbags pasaron a ser
+totalmente compatibles con Unibotics y el desarrollo del ejercicio pudo
+continuar con normalidad.
+</p>
+
+<p>
+<a href="semana17.html">← Volver a Semana 17</a>
+</p>
+
+</div>
+
+</body>
+</html>

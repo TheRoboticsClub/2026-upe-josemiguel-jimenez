@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finalización del ejercicio Visual Odometry</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    ul {
+      line-height: 1.6;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+<h2>Finalización del ejercicio Visual Odometry 3D</h2>
+
+<p>
+Tras el trabajo realizado durante las semanas anteriores, esta semana se ha
+completado el desarrollo del nuevo ejercicio de <strong>Visual Odometry 3D</strong>
+para Robotics Academy Premium. Durante el proceso se han implementado tanto la
+infraestructura del ejercicio como los distintos visores, el soporte para
+Ground Truth y la compatibilidad con rosbags, dando lugar a una versión
+completamente funcional.
+</p>
+
+<p>
+Con ello concluye el desarrollo del ejercicio, quedando preparado para su
+incorporación al catálogo de prácticas de Robotics Academy Premium una vez
+finalice el proceso de revisión.
+</p>
+
+<h3>Funcionamiento del ejercicio</h3>
+
+<p>
+El objetivo del ejercicio será que el usuario implemente su propio algoritmo de
+Visual Odometry para estimar el movimiento de una cámara a partir de una
+secuencia de imágenes. Durante la ejecución, el algoritmo irá calculando la
+pose estimada del vehículo y enviándola a la infraestructura, que la
+representará en tiempo real mediante una trayectoria de color rojo en el visor
+3D.
+</p>
+
+<p>
+El ejercicio ofrece dos formas distintas de proporcionar los datos de entrada:
+</p>
+
+<ul>
+  <li>
+    <strong>Modo vídeo:</strong> pensado para una primera toma de contacto con
+    el algoritmo. En este modo únicamente se dispone de la secuencia de
+    imágenes, por lo que no existe información de Ground Truth para comparar
+    los resultados.
+  </li>
+
+  <li>
+    <strong>Modo rosbag:</strong> además de las imágenes, el rosbag puede
+    incorporar la trayectoria real del vehículo (Ground Truth). Esto permite
+    visualizar simultáneamente la trayectoria estimada por el usuario y la
+    trayectoria real, facilitando la evaluación del algoritmo desarrollado.
+  </li>
+</ul>
+
+<h3>Resultado final</h3>
+
+<p>
+El ejercicio desarrollado incorpora todas las herramientas necesarias para que
+los usuarios puedan implementar y depurar su solución de Visual Odometry de una
+forma visual e intuitiva. Los diferentes visores permiten observar tanto la
+imagen procesada como la evolución de la trayectoria estimada y, cuando está
+disponible, compararla con el Ground Truth del vehículo.
+</p>
+
+<p>
+Todo el trabajo realizado durante las últimas semanas ha permitido construir un
+ejercicio mucho más completo que la versión inicial, incorporando soporte para
+visualización 3D, reproducción mediante rosbags y una infraestructura flexible
+capaz de trabajar con distintos conjuntos de datos.
+</p>
+
+<h3>Envío a Robotics Academy Premium</h3>
+
+<p>
+Una vez finalizado el desarrollo, se ha preparado un <strong>Pull Request</strong> del ejercicio
+para el repositorio de Robotics Academy Premium. En
+este momento queda pendiente del proceso de revisión por parte del equipo
+antes de ser incorporado oficialmente al repositorio principal.
+</p>
+
+<p>
+Puede consultarse la rama Visual Odometry de RA Premium en el siguiente
+enlace:
+</p>
+
+<p>
+<a href="https://github.com/JdeRobot/RoboticsAcademy-premium/tree/main" target="_blank">
+https://github.com/JdeRobot/RoboticsAcademy-premium/tree/visual_odometry
+</a>
+</p>
+
+<h3>Conclusión</h3>
+
+<p>
+Con la finalización de este ejercicio concluye uno de los principales trabajos
+desarrollados durante las prácticas. El nuevo ejercicio de Visual Odometry 3D
+proporciona una base completa para que futuros usuarios puedan implementar,
+probar y evaluar sus propios algoritmos de odometría visual utilizando tanto
+secuencias de vídeo como rosbags con información de Ground Truth, ofreciendo
+una experiencia mucho más cercana a la que encontrarían en aplicaciones reales
+basadas en ROS.
+</p>
+
+<p>
+<a href="semana18.html">← Volver a Semana 18</a>
+</p>
+
+</div>
+
+</body>
+</html>

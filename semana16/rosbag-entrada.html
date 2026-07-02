@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preparación de rosbags como entrada</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    pre {
+      background-color: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+<h2>Preparación de rosbags como entrada</h2>
+
+<p>
+Uno de los principales objetivos de esta semana fue comenzar a incorporar una
+nueva forma de proporcionar datos al ejercicio de Visual Odometry mediante el
+uso de <strong>rosbags</strong>. Hasta ese momento, el algoritmo trabajaba
+principalmente con secuencias de imágenes procedentes del dataset KITTI, pero
+era necesario adaptar el ejercicio para que pudiera reproducir datos grabados
+en formato ROS.
+</p>
+
+<p>
+Para facilitar este proceso, se desarrolló una herramienta que permite generar
+rosbags a partir de distintas secuencias de prueba. De esta forma fue posible
+crear varios archivos que posteriormente servirían como entrada del ejercicio
+dentro de Unibotics.
+</p>
+
+<h3>Rosbags frente a secuencias de vídeo</h3>
+
+<p>
+La incorporación de rosbags no solo permite reproducir las imágenes de la
+cámara, sino también incluir información adicional asociada a la secuencia.
+Una de las más importantes para este ejercicio es la trayectoria real del
+vehículo (<strong>Ground Truth</strong>), que puede publicarse junto con las
+imágenes durante la reproducción del rosbag.
+</p>
+
+<p>
+Con el sistema basado únicamente en vídeos era posible procesar la secuencia
+de imágenes, pero no disponer de información adicional sincronizada con cada
+fotograma. Esto impedía obtener el Ground Truth directamente durante la
+ejecución y obligaba a utilizar soluciones alternativas, como la lectura del
+archivo <strong>poses.txt</strong> del dataset KITTI, que era una solucion temporal que teniamos antes de incorporar los rosbags.
+</p>
+
+<p>
+Gracias al uso de rosbags, toda la información necesaria para el ejercicio
+queda integrada en una única fuente de datos. Esto permite reproducir tanto
+las imágenes como la trayectoria real del vehículo de forma sincronizada,
+acercando el funcionamiento del ejercicio a un entorno real basado en ROS.
+</p>
+
+<h3>Generación de los rosbags</h3>
+
+<p>
+La herramienta desarrollada automatiza la creación de los rosbags,
+permitiendo disponer de diferentes secuencias listas para ser utilizadas en el
+ejercicio. Gracias a ello, es posible preparar nuevos escenarios de prueba de
+forma sencilla sin necesidad de grabarlos manualmente.
+</p>
+
+<p>
+El resultado es un conjunto de archivos <strong>.bag</strong> que contienen la
+información necesaria para reproducir la secuencia exactamente igual que si
+procediera de un robot real.
+</p>
+
+<h3>Integración con Unibotics</h3>
+
+<p>
+Una vez generado el rosbag, el siguiente paso consiste en incorporarlo al
+proyecto. Para ello, únicamente es necesario copiar el directorio completo del
+rosbag dentro de la carpeta <strong>resources</strong> del frontend del
+ejercicio. Cada rosbag está formado por un directorio que contiene el archivo
+<strong>metadata.yaml</strong> y uno o varios ficheros <strong>.db3</strong>,
+donde se almacenan todos los mensajes grabados.
+</p>
+
+<p>
+Posteriormente, durante la ejecución de Unibotics, el rosbag puede
+reproducirse desde la línea de comandos indicando el nombre del directorio.
+De esta forma, el ejercicio recibe de manera sincronizada toda la información
+almacenada en el rosbag, incluyendo las imágenes de la cámara y cualquier otro
+tópico registrado durante la grabación.
+</p>
+
+<pre><code>frontend/
+└── resources/
+    └── your_rosbag_name/
+        ├── metadata.yaml
+        └── *.db3</code></pre>
+
+<p>
+Este mecanismo simplifica la incorporación de nuevos escenarios de prueba, ya
+que basta con añadir un nuevo directorio de rosbag a la carpeta
+<strong>resources</strong> para poder utilizarlo posteriormente durante la
+ejecución del ejercicio.
+</p>
+
+<h3>Ventajas del nuevo sistema</h3>
+
+<ul>
+  <li>Permite utilizar distintas secuencias de prueba de forma sencilla.</li>
+  <li>Facilita la reutilización de escenarios previamente grabados.</li>
+  <li>Posibilita incorporar información adicional, como el <strong>Ground Truth</strong>, sincronizada con las imágenes de la cámara.</li>
+  <li>Acerca el ejercicio al funcionamiento habitual de aplicaciones basadas en ROS.</li>
+  <li>Simplifica la incorporación de nuevos conjuntos de datos sin necesidad de modificar el ejercicio.</li>
+</ul>
+
+<h3>Conclusión</h3>
+
+<p>
+El trabajo realizado durante esta semana supone el primer paso para incorporar
+el soporte completo de rosbags dentro del ejercicio de Visual Odometry. La
+herramienta desarrollada permite generar nuevas secuencias de prueba e
+integrarlas fácilmente en Unibotics. Además, el uso de rosbags abre la puerta
+a transmitir información adicional, como el Ground Truth del vehículo, algo
+que no era posible utilizando únicamente secuencias de vídeo y que resultará
+fundamental para la versión final del ejercicio.
+</p>
+
+<p>
+<a href="semana16.html">← Volver a Semana 16</a>
+</p>
+
+</div>
+
+</body>
+</html>

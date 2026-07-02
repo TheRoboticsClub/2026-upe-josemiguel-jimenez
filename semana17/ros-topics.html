@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estandarización de los topics de los rosbags</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #a7d7a2;
+      display: flex;
+      justify-content: center;
+    }
+
+    .post {
+      background: #d2f0c6;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #2f7d3b;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #2f7d3b;
+      margin-bottom: 5px;
+    }
+
+    p {
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    pre {
+      background-color: #e6f4db;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid #2f7d3b;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2f7d3b;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="post">
+
+<h2>Estandarización de los topics de los rosbags</h2>
+
+<p>
+Además de incorporar el soporte para rosbags, fue necesario definir una
+estructura común que permitiera utilizar cualquier secuencia de datos dentro
+del ejercicio sin necesidad de modificar la infraestructura. Para ello se
+establecieron una serie de <strong>topics estándar</strong> que todos los
+rosbags deberán publicar para ser compatibles con el ejercicio de
+Visual Odometry.
+</p>
+
+<h3>Preprocesamiento de los rosbags</h3>
+
+<p>
+Antes de utilizar un rosbag dentro del ejercicio, el usuario deberá realizar
+un pequeño proceso de adaptación para comprobar que los datos se publican en
+los topics esperados por la infraestructura. De esta forma, cualquier rosbag
+que siga esta convención podrá utilizarse directamente sin realizar cambios
+adicionales en el código.
+</p>
+
+<p>
+La infraestructura espera recibir las imágenes monocromáticas de la cámara en
+el siguiente topic:
+</p>
+
+<pre><code>/kitti/camera/gray/left/image_raw</code></pre>
+
+<p>
+Por otro lado, si el rosbag dispone de información de <strong>Ground Truth</strong>,
+esta deberá publicarse en el topic:
+</p>
+
+<pre><code>/kitti/oxts/gps/fix</code></pre>
+
+<h3>Funcionamiento dentro del ejercicio</h3>
+
+<p>
+Una vez que el rosbag publica correctamente en estos topics, el ejercicio es
+capaz de consumir automáticamente la información durante su ejecución. Las
+imágenes recibidas desde la cámara se muestran en el visor principal, donde el
+usuario desarrolla y depura su algoritmo de Visual Odometry.
+</p>
+
+<p>
+Si además el rosbag contiene información de Ground Truth, esta también será
+procesada por la infraestructura y representada en el visor 3D mediante una
+<strong>trayectoria de color verde</strong>. Esto permite comparar posteriormente
+la trayectoria real con la estimada por el algoritmo del usuario, que continúa
+representándose mediante una línea roja.
+</p>
+
+<h3>Ventajas de la estandarización</h3>
+
+<ul>
+  <li>Todos los rosbags compatibles pueden utilizarse sin modificar el ejercicio.</li>
+  <li>Se simplifica la incorporación de nuevos conjuntos de datos.</li>
+  <li>La infraestructura puede detectar automáticamente la información disponible.</li>
+  <li>Cuando existe Ground Truth, este se representa automáticamente junto a la trayectoria estimada.</li>
+  <li>Se facilita la comparación entre diferentes secuencias de prueba.</li>
+</ul>
+
+<h3>Conclusión</h3>
+
+<p>
+La definición de unos topics estándar constituye un paso importante para hacer
+el ejercicio más flexible y reutilizable. Gracias a este pequeño
+preprocesamiento, cualquier usuario puede adaptar sus propios rosbags para que
+la infraestructura sea capaz de reproducir las imágenes, mostrar el Ground
+Truth cuando esté disponible y ofrecer exactamente la misma experiencia con
+independencia del origen de los datos.
+</p>
+
+<p>
+<a href="semana17.html">← Volver a Semana 17</a>
+</p>
+
+</div>
+
+</body>
+</html>
